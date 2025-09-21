@@ -162,6 +162,7 @@ export default function VideoPerformanceInteractive() {
             },
           },
         })
+        setPlayer(newPlayer)
       } catch (error) {
         console.log("[v0] Error creating YouTube player:", error)
         setHasError(true)

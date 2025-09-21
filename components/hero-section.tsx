@@ -33,7 +33,8 @@ export default function HeroSection() {
   }, [])
 
   useEffect(() => {
-    if (apiLoadedRef.current || (window as any).YT) {
+    // Check if API is fully ready (not just loaded)
+    if (apiLoadedRef.current || ((window as any).YT && (window as any).YT.Player)) {
       initializePlayer()
       return
     }
@@ -41,20 +42,28 @@ export default function HeroSection() {
     console.log("[v0] Loading YouTube API")
     apiLoadedRef.current = true
 
-    const tag = document.createElement("script")
-    tag.src = "https://www.youtube.com/iframe_api"
-    const firstScriptTag = document.getElementsByTagName("script")[0]
-    firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag)
-
+    // Set up the ready callback first
     // @ts-ignore
     window.onYouTubeIframeAPIReady = () => {
       console.log("[v0] YouTube API ready")
       initializePlayer()
     }
+
+    // Load the script
+    const tag = document.createElement("script")
+    tag.src = "https://www.youtube.com/iframe_api"
+    const firstScriptTag = document.getElementsByTagName("script")[0]
+    firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag)
   }, [])
 
   const initializePlayer = () => {
     if (playerRef.current) return // Prevent multiple player instances
+
+    // Double-check API is ready before initializing
+    if (!window.YT || !window.YT.Player) {
+      console.log("[v0] YouTube API not ready yet")
+      return
+    }
 
     console.log("[v0] Initializing YouTube player")
     try {
