@@ -115,7 +115,7 @@ export default function VideoPerformanceInteractive() {
 
     window.onYouTubeIframeAPIReady = () => {
       try {
-        const newPlayer = new window.YT.Player("youtube-player", {
+        const newPlayer = new window.YT.Player("performance-youtube-player", {
           height: "100%",
           width: "100%",
           videoId: gutterGurusData.youtubeId,
@@ -317,7 +317,7 @@ export default function VideoPerformanceInteractive() {
               >
                 {!hasError ? (
                   <div
-                    id="youtube-player"
+                    id="performance-youtube-player"
                     className="absolute inset-0 w-full h-full"
                     style={{
                       width: "100%",

@@ -59,7 +59,7 @@ export default function HeroSection() {
     console.log("[v0] Initializing YouTube player")
     try {
       // @ts-ignore
-      playerRef.current = new window.YT.Player("youtube-player", {
+      playerRef.current = new window.YT.Player("hero-youtube-player", {
         height: "100%",
         width: "100%",
         videoId: "XuKrFC3yDgo",
@@ -193,7 +193,7 @@ export default function HeroSection() {
               }}
             >
               {/* YouTube Player (hidden controls) */}
-              <div id="youtube-player" className="w-full h-full"></div>
+              <div id="hero-youtube-player" className="w-full h-full"></div>
 
               {!isReady && (
                 <div className="absolute inset-0 bg-black flex items-center justify-center">
