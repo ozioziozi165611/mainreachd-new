@@ -8,7 +8,7 @@ import { useEffect, useState, useRef } from "react"
 
 export default function HeroSection() {
   const [typedText, setTypedText] = useState("")
-  const fullText = "Turn $1,000 into $27,000 with ads that actually work"
+  const fullText = "See How Local AUSSIE Businesses Have DOUBLED Their Revenue Through Meta Marketing"
 
   const [isPlaying, setIsPlaying] = useState(false)
   const [isMuted, setIsMuted] = useState(true) // Start muted to allow autoplay
@@ -170,10 +170,29 @@ export default function HeroSection() {
     <section className="relative min-h-screen flex items-center justify-center hero-gradient overflow-hidden pt-20 md:pt-24 lg:pt-32">
       <div className="container mx-auto px-4 md:px-6 z-10 relative max-w-7xl">
         <div className="flex flex-col items-center text-center space-y-8 md:space-y-12">
+          {/* Typed Headline - Now above video */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.5 }}
+            className="space-y-6 md:space-y-8 max-w-6xl px-2"
+          >
+            <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight">
+              <span className="block sm:inline">{typedText}</span>
+              <span className="animate-pulse">|</span>
+            </h1>
+
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed px-2">
+              We've generated <span className="text-green-400 font-bold">$100k+ in revenue</span> for our clients.
+              <br className="hidden sm:block" />
+              <span className="block sm:inline"> Stop wasting money on ads that don't convert.</span>
+            </p>
+          </motion.div>
+
           <motion.div
             initial={{ opacity: 0, scale: 0.3 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.5, delay: 0.2 }}
+            transition={{ duration: 1.5, delay: 1.2 }}
             className="w-full max-w-4xl"
           >
             <div
@@ -239,30 +258,12 @@ export default function HeroSection() {
             </div>
           </motion.div>
 
-          {/* Typed Headline */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1 }}
-            className="space-y-6 md:space-y-8 max-w-6xl px-2"
-          >
-            <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight">
-              <span className="block sm:inline">{typedText}</span>
-              <span className="animate-pulse">|</span>
-            </h1>
-
-            <p className="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed px-2">
-              We've generated <span className="text-green-400 font-bold">$100k+ in revenue</span> for our clients.
-              <br className="hidden sm:block" />
-              <span className="block sm:inline"> Stop wasting money on ads that don't convert.</span>
-            </p>
-          </motion.div>
 
           {/* Interactive CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1.5 }}
+            transition={{ duration: 1, delay: 2.5 }}
             className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center justify-center w-full max-w-lg sm:max-w-none px-4"
           >
             <a
@@ -273,7 +274,7 @@ export default function HeroSection() {
             >
               <Button className="btn-primary group w-full sm:w-auto text-base md:text-lg px-6 md:px-8 py-3 md:py-4">
                 <MessageCircle className="mr-2 md:mr-3 h-5 w-5 md:h-6 md:w-6 group-hover:animate-bounce" />
-                <span className="whitespace-nowrap">Start Your Transformation</span>
+                <span className="whitespace-nowrap">Book A Free Consultation</span>
                 <ArrowRight className="ml-2 md:ml-3 h-5 w-5 md:h-6 md:w-6 group-hover:translate-x-1 transition-transform" />
               </Button>
             </a>
