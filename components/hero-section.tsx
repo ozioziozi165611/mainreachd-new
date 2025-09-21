@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import { ArrowRight, MessageCircle, Play, Pause, Volume2, VolumeX } from "lucide-react"
 import { useEffect, useState, useRef } from "react"
+import { loadYouTubeAPI, isYouTubeAPIReady } from "@/lib/youtube"
 
 export default function HeroSection() {
   const [typedText, setTypedText] = useState("")
@@ -33,41 +34,35 @@ export default function HeroSection() {
   }, [])
 
   useEffect(() => {
-    // Check if API is fully ready (not just loaded)
-    if (apiLoadedRef.current || ((window as any).YT && (window as any).YT.Player)) {
-      initializePlayer()
-      return
+    const initializeVideo = async () => {
+      // Prevent multiple initializations
+      if (apiLoadedRef.current) return
+      apiLoadedRef.current = true
+
+      try {
+        console.log("[v0] Loading YouTube API")
+        await loadYouTubeAPI()
+        console.log("[v0] YouTube API ready")
+        initializePlayer()
+      } catch (error) {
+        console.error("[v0] Failed to load YouTube API:", error)
+      }
     }
 
-    console.log("[v0] Loading YouTube API")
-    apiLoadedRef.current = true
-
-    // Set up the ready callback first
-    // @ts-ignore
-    window.onYouTubeIframeAPIReady = () => {
-      console.log("[v0] YouTube API ready")
-      initializePlayer()
-    }
-
-    // Load the script
-    const tag = document.createElement("script")
-    tag.src = "https://www.youtube.com/iframe_api"
-    const firstScriptTag = document.getElementsByTagName("script")[0]
-    firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag)
+    initializeVideo()
   }, [])
 
   const initializePlayer = () => {
     if (playerRef.current) return // Prevent multiple player instances
 
     // Double-check API is ready before initializing
-    if (!window.YT || !window.YT.Player) {
+    if (!isYouTubeAPIReady()) {
       console.log("[v0] YouTube API not ready yet")
       return
     }
 
     console.log("[v0] Initializing YouTube player")
     try {
-      // @ts-ignore
       playerRef.current = new window.YT.Player("hero-youtube-player", {
         height: "100%",
         width: "100%",

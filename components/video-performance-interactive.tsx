@@ -20,6 +20,7 @@ import {
 import AnimatedNumber from "./animated-number" // Keep this import for ROI and Revenue
 import Image from "next/image"
 import { useState, useRef, useEffect, useCallback } from "react"
+import { loadYouTubeAPI, isYouTubeAPIReady } from "@/lib/youtube"
 
 const overallStats = [
   {
@@ -94,27 +95,19 @@ export default function VideoPerformanceInteractive() {
   const [player, setPlayer] = useState<any>(null)
 
   useEffect(() => {
-    const loadYouTubeAPI = () => {
-      if (typeof window !== "undefined" && !window.YT) {
-        const tag = document.createElement("script")
-        tag.src = "https://www.youtube.com/iframe_api"
-        tag.onload = () => {
-          console.log("[v0] YouTube API script loaded")
-        }
-        tag.onerror = () => {
-          console.log("[v0] YouTube API failed to load")
+    const initializeVideo = async () => {
+      try {
+        console.log("[v0] Loading YouTube API for performance video")
+        await loadYouTubeAPI()
+        console.log("[v0] YouTube API ready for performance video")
+        
+        if (!isYouTubeAPIReady()) {
+          console.error("[v0] YouTube API not ready after loading")
           setHasError(true)
           setIsLoading(false)
+          return
         }
-        const firstScriptTag = document.getElementsByTagName("script")[0]
-        firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag)
-      }
-    }
 
-    loadYouTubeAPI()
-
-    window.onYouTubeIframeAPIReady = () => {
-      try {
         const newPlayer = new window.YT.Player("performance-youtube-player", {
           height: "100%",
           width: "100%",
