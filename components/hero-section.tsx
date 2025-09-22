@@ -5,19 +5,13 @@ import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import { ArrowRight, MessageCircle, Play, Pause, Volume2, VolumeX } from "lucide-react"
 import { useEffect, useState, useRef } from "react"
-import { loadYouTubeAPI, isYouTubeAPIReady } from "@/lib/youtube"
 
 export default function HeroSection() {
   const [typedText, setTypedText] = useState("")
   const fullText = "See How Local AUSSIE Businesses Have DOUBLED Their Revenue Through Meta Marketing"
 
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [isMuted, setIsMuted] = useState(true) // Start muted to allow autoplay
-  const [showControls, setShowControls] = useState(false)
-  const [isReady, setIsReady] = useState(false) // Track if player is ready
-  const playerRef = useRef<any>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
-  const apiLoadedRef = useRef(false) // Prevent multiple API loads
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
     let index = 0
@@ -34,132 +28,17 @@ export default function HeroSection() {
   }, [])
 
   useEffect(() => {
-    const initializeVideo = async () => {
-      // Prevent multiple initializations
-      if (apiLoadedRef.current) return
-      apiLoadedRef.current = true
-
-      try {
-        console.log("[v0] Loading YouTube API")
-        await loadYouTubeAPI()
-        console.log("[v0] YouTube API ready")
-        initializePlayer()
-      } catch (error) {
-        console.error("[v0] Failed to load YouTube API:", error)
-      }
+    // Auto-play video when component mounts
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {
+        // Autoplay blocked, video will play on user interaction
+        console.log("Autoplay blocked, waiting for user interaction")
+      })
     }
-
-    initializeVideo()
   }, [])
 
-  const initializePlayer = () => {
-    if (playerRef.current) return // Prevent multiple player instances
-
-    // Double-check API is ready before initializing
-    if (!isYouTubeAPIReady()) {
-      console.log("[v0] YouTube API not ready yet")
-      return
-    }
-
-    console.log("[v0] Initializing YouTube player")
-    try {
-      playerRef.current = new window.YT.Player("hero-youtube-player", {
-        height: "100%",
-        width: "100%",
-        videoId: "XuKrFC3yDgo",
-        playerVars: {
-          autoplay: 1,
-          controls: 0, // Completely hide all controls
-          disablekb: 1, // Disable keyboard controls
-          fs: 0, // Disable fullscreen
-          iv_load_policy: 3, // Hide video annotations
-          modestbranding: 1,
-          rel: 0,
-          showinfo: 0, // Hide video info
-          start: 0,
-          playsinline: 1, // Better mobile support
-        },
-        events: {
-          onReady: (event: any) => {
-            console.log("[v0] Player ready, starting video")
-            setIsReady(true)
-            event.target.playVideo()
-            setIsPlaying(true)
-
-            const enableAudio = () => {
-              try {
-                event.target.unMute()
-                setIsMuted(false)
-                console.log("[v0] Audio enabled")
-              } catch (e) {
-                console.log("[v0] Audio blocked by browser:", e)
-                setIsMuted(true)
-              }
-            }
-
-            // Try to enable audio immediately
-            setTimeout(enableAudio, 500)
-
-            // Also try on first user interaction
-            const handleFirstInteraction = () => {
-              enableAudio()
-              document.removeEventListener("click", handleFirstInteraction)
-              document.removeEventListener("touchstart", handleFirstInteraction)
-            }
-
-            document.addEventListener("click", handleFirstInteraction)
-            document.addEventListener("touchstart", handleFirstInteraction)
-          },
-          onStateChange: (event: any) => {
-            console.log("[v0] Player state changed:", event.data)
-            // @ts-ignore
-            if (event.data === window.YT.PlayerState.PLAYING) {
-              setIsPlaying(true)
-              // @ts-ignore
-            } else if (event.data === window.YT.PlayerState.PAUSED) {
-              setIsPlaying(false)
-            }
-          },
-          onError: (event: any) => {
-            console.log("[v0] Player error:", event.data)
-          },
-        },
-      })
-    } catch (error) {
-      console.log("[v0] Error initializing player:", error)
-    }
-  }
-
-  const togglePlayPause = () => {
-    if (playerRef.current && isReady) {
-      console.log("[v0] Toggling play/pause, currently playing:", isPlaying)
-      if (isPlaying) {
-        playerRef.current.pauseVideo()
-      } else {
-        playerRef.current.playVideo()
-        if (isMuted) {
-          try {
-            playerRef.current.unMute()
-            setIsMuted(false)
-          } catch (e) {
-            console.log("[v0] Could not unmute:", e)
-          }
-        }
-      }
-    }
-  }
-
-  const toggleMute = () => {
-    if (playerRef.current && isReady) {
-      console.log("[v0] Toggling mute, currently muted:", isMuted)
-      if (isMuted) {
-        playerRef.current.unMute()
-        setIsMuted(false)
-      } else {
-        playerRef.current.mute()
-        setIsMuted(true)
-      }
-    }
+  const handleVideoLoaded = () => {
+    setIsVideoLoaded(true)
   }
 
   const scrollToTestimonials = () => {
@@ -208,13 +87,29 @@ export default function HeroSection() {
             transition={{ duration: 1.5, delay: 1.2 }}
             className="w-full max-w-4xl"
           >
-            {/* Clean YouTube Video - No overlay */}
-            <div className="w-full aspect-video rounded-2xl overflow-hidden shadow-2xl bg-black">
-              <div id="hero-youtube-player" className="w-full h-full"></div>
+            {/* Custom Video Player - Clean and Integrated */}
+            <div className="w-full aspect-video rounded-2xl overflow-hidden shadow-2xl bg-black relative">
+              <video
+                ref={videoRef}
+                className="w-full h-full object-cover"
+                autoPlay
+                muted
+                loop
+                playsInline
+                onLoadedData={handleVideoLoaded}
+              >
+                <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
+                <div className="flex items-center justify-center h-full text-white">
+                  Your browser does not support the video tag.
+                </div>
+              </video>
               
-              {!isReady && (
-                <div className="flex items-center justify-center h-full">
-                  <div className="text-white text-lg">Loading video...</div>
+              {/* Loading state */}
+              {!isVideoLoaded && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-white text-lg bg-black/50 px-4 py-2 rounded-lg">
+                    Loading video...
+                  </div>
                 </div>
               )}
             </div>
