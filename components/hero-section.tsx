@@ -69,9 +69,13 @@ export default function HeroSection() {
         videoId: "XuKrFC3yDgo",
         playerVars: {
           autoplay: 1,
-          controls: 1, // Enable built-in controls
+          controls: 0, // Completely hide all controls
+          disablekb: 1, // Disable keyboard controls
+          fs: 0, // Disable fullscreen
+          iv_load_policy: 3, // Hide video annotations
           modestbranding: 1,
           rel: 0,
+          showinfo: 0, // Hide video info
           start: 0,
           playsinline: 1, // Better mobile support
         },
@@ -168,13 +172,13 @@ export default function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center hero-gradient overflow-hidden pt-20 md:pt-24 lg:pt-32">
       <div className="container mx-auto px-4 md:px-6 z-10 relative max-w-7xl">
-        <div className="flex flex-col items-center text-center space-y-6 md:space-y-8">
+        <div className="flex flex-col items-center text-center space-y-3">
           {/* Typed Headline and Button */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.5 }}
-            className="space-y-4 md:space-y-6 max-w-6xl px-2"
+            className="space-y-1 max-w-6xl px-2"
           >
             <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight">
               <span className="block sm:inline">{typedText}</span>
@@ -182,7 +186,7 @@ export default function HeroSection() {
             </h1>
             
             {/* Book A Free Consultation Button - Right after title */}
-            <div className="flex justify-center w-full pt-2">
+            <div className="flex justify-center w-full">
               <a
                 href="https://api.leadconnectorhq.com/widget/booking/VTZMJcf2k9axPsM9Edc8"
                 target="_blank"
