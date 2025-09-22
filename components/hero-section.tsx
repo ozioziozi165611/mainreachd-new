@@ -185,12 +185,27 @@ export default function HeroSection() {
               <span className="block sm:inline">{typedText}</span>
               <span className="animate-pulse">|</span>
             </h1>
+          </motion.div>
 
-            <p className="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed px-2">
-              We've generated <span className="text-green-400 font-bold">$100k+ in revenue</span> for our clients.
-              <br className="hidden sm:block" />
-              <span className="block sm:inline"> Stop wasting money on ads that don't convert.</span>
-            </p>
+          {/* Book A Free Consultation Button - Now after title */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 1.0 }}
+            className="flex justify-center w-full px-4"
+          >
+            <a
+              href="https://api.leadconnectorhq.com/widget/booking/VTZMJcf2k9axPsM9Edc8"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto"
+            >
+              <Button className="btn-primary group w-full sm:w-auto text-base md:text-lg px-6 md:px-8 py-3 md:py-4">
+                <MessageCircle className="mr-2 md:mr-3 h-5 w-5 md:h-6 md:w-6 group-hover:animate-bounce" />
+                <span className="whitespace-nowrap">Book A Free Consultation</span>
+                <ArrowRight className="ml-2 md:ml-3 h-5 w-5 md:h-6 md:w-6 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </a>
           </motion.div>
 
           <motion.div
@@ -262,27 +277,27 @@ export default function HeroSection() {
             </div>
           </motion.div>
 
+          {/* We've generated text - Now after video */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 2.2 }}
+            className="space-y-6 md:space-y-8 max-w-6xl px-2"
+          >
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed px-2">
+              We've generated <span className="text-green-400 font-bold">$100k+ in revenue</span> for our clients.
+              <br className="hidden sm:block" />
+              <span className="block sm:inline"> Stop wasting money on ads that don't convert.</span>
+            </p>
+          </motion.div>
 
-          {/* Interactive CTA Buttons */}
+          {/* Watch Success Stories Button */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 2.5 }}
-            className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center justify-center w-full max-w-lg sm:max-w-none px-4"
+            className="flex justify-center w-full px-4"
           >
-            <a
-              href="https://api.leadconnectorhq.com/widget/booking/VTZMJcf2k9axPsM9Edc8"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto"
-            >
-              <Button className="btn-primary group w-full sm:w-auto text-base md:text-lg px-6 md:px-8 py-3 md:py-4">
-                <MessageCircle className="mr-2 md:mr-3 h-5 w-5 md:h-6 md:w-6 group-hover:animate-bounce" />
-                <span className="whitespace-nowrap">Book A Free Consultation</span>
-                <ArrowRight className="ml-2 md:ml-3 h-5 w-5 md:h-6 md:w-6 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </a>
-
             <Button
               onClick={scrollToTestimonials}
               className="btn-secondary group w-full sm:w-auto text-base md:text-lg px-6 md:px-8 py-3 md:py-4"
