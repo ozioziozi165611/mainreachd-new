@@ -285,7 +285,7 @@ export default function HeroSection() {
             className="space-y-6 md:space-y-8 max-w-6xl px-2"
           >
             <p className="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed px-2">
-              We've generated <span className="text-green-400 font-bold">$100k+ in revenue</span> for our clients.
+              We've generated our clients <span className="text-green-400 font-bold">100k+ in revenue</span>
               <br className="hidden sm:block" />
               <span className="block sm:inline"> Stop wasting money on ads that don't convert.</span>
             </p>
