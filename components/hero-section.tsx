@@ -12,7 +12,7 @@ export default function HeroSection() {
 
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [isMuted, setIsMuted] = useState(true)
+  const [isMuted, setIsMuted] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -30,20 +30,30 @@ export default function HeroSection() {
   }, [])
 
   useEffect(() => {
-    // Set up video when it loads - only once
+    // Set up video when it loads - try audio first
     if (videoRef.current && isVideoLoaded) {
       const video = videoRef.current
       
-      // Start muted for reliable autoplay (browser-friendly)
-      video.muted = true
-      setIsMuted(true)
+      // Try autoplay with audio first (user's preference)
+      video.muted = false
+      setIsMuted(false)
       
       video.play().then(() => {
         setIsPlaying(true)
-        console.log("Video autoplay muted successful - click volume to enable audio")
+        console.log("Video autoplay WITH AUDIO successful! 🔊")
       }).catch((error) => {
-        console.log("Video autoplay failed:", error)
-        setIsPlaying(false)
+        console.log("Autoplay with audio blocked by browser, trying muted:", error)
+        // Browser blocked audio autoplay, fallback to muted
+        video.muted = true
+        setIsMuted(true)
+        
+        video.play().then(() => {
+          setIsPlaying(true)
+          console.log("Video autoplay muted successful - click 🔊 for audio")
+        }).catch((err) => {
+          console.log("All autoplay blocked:", err)
+          setIsPlaying(false)
+        })
       })
     }
   }, [isVideoLoaded])
