@@ -3,7 +3,7 @@
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
-import { ArrowRight, MessageCircle, Play } from "lucide-react"
+import { ArrowRight, MessageCircle, Play, Pause, Volume2, VolumeX } from "lucide-react"
 import { useEffect, useState, useRef } from "react"
 
 export default function HeroSection() {
@@ -11,6 +11,8 @@ export default function HeroSection() {
   const fullText = "See How Local AUSSIE Businesses Have DOUBLED Their Revenue Through Meta Marketing"
 
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [isMuted, setIsMuted] = useState(true)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -38,6 +40,33 @@ export default function HeroSection() {
 
   const handleVideoLoaded = () => {
     setIsVideoLoaded(true)
+  }
+
+  const togglePlayPause = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause()
+        setIsPlaying(false)
+      } else {
+        videoRef.current.play()
+        setIsPlaying(true)
+      }
+    }
+  }
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted
+      setIsMuted(videoRef.current.muted)
+    }
+  }
+
+  const handleVideoPlay = () => {
+    setIsPlaying(true)
+  }
+
+  const handleVideoPause = () => {
+    setIsPlaying(false)
   }
 
 
@@ -93,10 +122,12 @@ export default function HeroSection() {
                 ref={videoRef}
                 className="w-full h-full object-cover"
                 autoPlay
-                muted
+                muted={isMuted}
                 loop
                 playsInline
                 onLoadedData={handleVideoLoaded}
+                onPlay={handleVideoPlay}
+                onPause={handleVideoPause}
               >
                 <source src="/videos/draft-4.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
@@ -107,6 +138,44 @@ export default function HeroSection() {
                   <div className="text-white text-lg bg-black/50 px-4 py-2 rounded-lg">
                     Loading your video...
                   </div>
+                </div>
+              )}
+              
+              {/* Custom Video Controls */}
+              {isVideoLoaded && (
+                <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center">
+                  <div className="flex space-x-3">
+                    {/* Play/Pause Button */}
+                    <button
+                      onClick={togglePlayPause}
+                      className="bg-black/70 hover:bg-black/90 text-white p-3 rounded-full transition-all duration-200 backdrop-blur-sm"
+                    >
+                      {isPlaying ? (
+                        <Pause className="w-5 h-5" />
+                      ) : (
+                        <Play className="w-5 h-5" />
+                      )}
+                    </button>
+                    
+                    {/* Mute/Unmute Button */}
+                    <button
+                      onClick={toggleMute}
+                      className="bg-black/70 hover:bg-black/90 text-white p-3 rounded-full transition-all duration-200 backdrop-blur-sm"
+                    >
+                      {isMuted ? (
+                        <VolumeX className="w-5 h-5" />
+                      ) : (
+                        <Volume2 className="w-5 h-5" />
+                      )}
+                    </button>
+                  </div>
+                  
+                  {/* Enable Audio Hint */}
+                  {isMuted && (
+                    <div className="bg-blue-600/80 text-white px-3 py-2 rounded-lg text-sm backdrop-blur-sm">
+                      Click 🔊 for audio
+                    </div>
+                  )}
                 </div>
               )}
             </div>
