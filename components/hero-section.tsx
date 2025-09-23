@@ -265,7 +265,7 @@ export default function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.5 }}
-            className="space-y-2 sm:space-y-6 md:space-y-8 max-w-6xl px-4 sm:px-6"
+            className="space-y-0 sm:space-y-6 md:space-y-8 max-w-6xl px-4 sm:px-6"
           >
             <h1 className="text-[1.75rem] leading-[1.2] sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white tracking-tight">
               <span className="block sm:inline">{typedText}</span>
