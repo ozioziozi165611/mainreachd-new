@@ -64,11 +64,16 @@ export default function HeroSection() {
 
   const handleVideoLoaded = () => {
     console.log("Video loaded successfully")
+    console.log("Video element:", videoRef.current)
+    console.log("Video readyState:", videoRef.current?.readyState)
+    console.log("Video duration:", videoRef.current?.duration)
     if (videoRef.current) {
       setDuration(videoRef.current.duration)
       setCurrentTime(videoRef.current.currentTime)
+      console.log("Set duration to:", videoRef.current.duration, "currentTime to:", videoRef.current.currentTime)
     }
     setIsVideoLoaded(true)
+    console.log("isVideoLoaded set to true")
   }
   
   const handleVideoError = (error: any) => {
@@ -77,18 +82,28 @@ export default function HeroSection() {
   }
 
   const togglePlayPause = () => {
+    console.log("Play/Pause button clicked, isPlaying:", isPlaying)
     if (videoRef.current) {
       if (isPlaying) {
+        console.log("Pausing video")
         videoRef.current.pause()
         setIsPlaying(false)
       } else {
-        videoRef.current.play()
-        setIsPlaying(true)
+        console.log("Playing video")
+        videoRef.current.play().then(() => {
+          setIsPlaying(true)
+          console.log("Video play successful")
+        }).catch((error) => {
+          console.log("Video play failed:", error)
+        })
       }
+    } else {
+      console.log("Video ref not available")
     }
   }
 
   const toggleMute = () => {
+    console.log("Volume/Mute button clicked, isMuted:", isMuted)
     if (videoRef.current) {
       const newMutedState = !isMuted
       videoRef.current.muted = newMutedState
@@ -99,6 +114,7 @@ export default function HeroSection() {
         // Restore previous volume when unmuting
         videoRef.current.volume = volume > 0 ? volume : 0.8
         setVolume(videoRef.current.volume)
+        console.log("Unmuted video, volume set to:", videoRef.current.volume)
         
         if (!isPlaying) {
           videoRef.current.play().then(() => {
@@ -111,6 +127,8 @@ export default function HeroSection() {
       } else {
         console.log("Video muted")
       }
+    } else {
+      console.log("Video ref not available for mute toggle")
     }
   }
 
@@ -136,10 +154,14 @@ export default function HeroSection() {
   }
 
   const handleSeek = (newTime: number) => {
+    console.log("Seeking to time:", newTime, "duration:", duration)
     if (videoRef.current && videoRef.current.duration) {
       const clampedTime = Math.max(0, Math.min(newTime, videoRef.current.duration))
+      console.log("Setting video currentTime to:", clampedTime)
       videoRef.current.currentTime = clampedTime
       setCurrentTime(clampedTime)
+    } else {
+      console.log("Cannot seek - video ref or duration not available")
     }
   }
 
@@ -149,12 +171,16 @@ export default function HeroSection() {
   }
 
   const rewindVideo = () => {
+    console.log("Rewind button clicked, current time:", currentTime)
     const newTime = Math.max(0, currentTime - 10)
+    console.log("Rewinding to:", newTime)
     handleSeek(newTime)
   }
 
   const fastForwardVideo = () => {
+    console.log("Fast forward button clicked, current time:", currentTime)
     const newTime = Math.min(duration, currentTime + 10)
+    console.log("Fast forwarding to:", newTime)
     handleSeek(newTime)
   }
 
