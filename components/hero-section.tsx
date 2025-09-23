@@ -297,7 +297,7 @@ export default function HeroSection() {
           >
             {/* VSL Player - Professional & Mobile Optimized */}
             <div 
-              className="w-full aspect-video rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl bg-black relative cursor-pointer ring-1 ring-orange-500/20 hover:ring-orange-500/40 transition-all duration-500 backdrop-blur-sm transform hover:scale-[1.01] active:scale-[0.99]"
+              className="w-full aspect-video rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl bg-black relative cursor-none sm:cursor-pointer ring-1 ring-orange-500/20 hover:ring-orange-500/40 transition-all duration-500 backdrop-blur-sm transform hover:scale-[1.01] active:scale-[0.99]"
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               onMouseMove={handleMouseMove}
