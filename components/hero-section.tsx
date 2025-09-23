@@ -17,7 +17,9 @@ export default function HeroSection() {
   const [duration, setDuration] = useState(0)
   const [isUserSeeking, setIsUserSeeking] = useState(false)
   const [volume, setVolume] = useState(1)
+  const [showControls, setShowControls] = useState(true)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const hideControlsTimer = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     let index = 0
@@ -167,6 +169,7 @@ export default function HeroSection() {
 
   const handleSeekBarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newTime = (parseFloat(e.target.value) / 100) * duration
+    setShowControls(true) // Show controls during seeking
     handleSeek(newTime)
   }
 
@@ -202,6 +205,80 @@ export default function HeroSection() {
       }
     }
   }
+
+  // Auto-hide controls functionality
+  const startHideControlsTimer = () => {
+    // Only hide controls if video is playing and user is not seeking
+    if (!isPlaying || isUserSeeking) {
+      return
+    }
+    
+    if (hideControlsTimer.current) {
+      clearTimeout(hideControlsTimer.current)
+    }
+    hideControlsTimer.current = setTimeout(() => {
+      setShowControls(false)
+    }, 3000) // Hide after 3 seconds of inactivity
+  }
+
+  const clearHideControlsTimer = () => {
+    if (hideControlsTimer.current) {
+      clearTimeout(hideControlsTimer.current)
+      hideControlsTimer.current = null
+    }
+  }
+
+  const handleMouseEnter = () => {
+    setShowControls(true)
+    clearHideControlsTimer()
+  }
+
+  const handleMouseLeave = () => {
+    startHideControlsTimer()
+  }
+
+  const handleMouseMove = () => {
+    setShowControls(true)
+    startHideControlsTimer()
+  }
+
+  // Touch/mobile handlers
+  const handleTouch = () => {
+    setShowControls(true)
+    clearHideControlsTimer()
+    startHideControlsTimer()
+  }
+
+  const handleVideoClick = () => {
+    // Toggle play/pause on click/tap and show controls
+    setShowControls(true)
+    clearHideControlsTimer()
+    togglePlayPause()
+    // Keep controls visible for 4 seconds after interaction
+    setTimeout(() => {
+      startHideControlsTimer()
+    }, 1000)
+  }
+
+  // Clean up timer on component unmount
+  useEffect(() => {
+    return () => {
+      if (hideControlsTimer.current) {
+        clearTimeout(hideControlsTimer.current)
+      }
+    }
+  }, [])
+
+  // Control visibility based on play state and seeking
+  useEffect(() => {
+    if (isPlaying && !isUserSeeking) {
+      startHideControlsTimer()
+    } else {
+      // Keep controls visible when paused or seeking
+      clearHideControlsTimer()
+      setShowControls(true)
+    }
+  }, [isPlaying, isUserSeeking])
 
 
   const scrollToTestimonials = () => {
@@ -251,7 +328,14 @@ export default function HeroSection() {
             className="w-full max-w-4xl"
           >
             {/* Your Video - ZERO YouTube Overlays */}
-            <div className="w-full aspect-video rounded-2xl overflow-hidden shadow-2xl bg-black relative">
+            <div 
+              className="w-full aspect-video rounded-2xl overflow-hidden shadow-2xl bg-black relative cursor-pointer"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onMouseMove={handleMouseMove}
+              onTouchStart={handleTouch}
+              onTouchMove={handleTouch}
+            >
               <video
                 ref={videoRef}
                 className="w-full h-full object-cover"
@@ -267,14 +351,17 @@ export default function HeroSection() {
                 onPlay={handleVideoPlay}
                 onPause={handleVideoPause}
                 onCanPlay={() => console.log("Video can play")}
+                onClick={handleVideoClick}
               >
                 <source src="/videos/draft-4.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
               
               
-              {/* Compact Video Controls */}
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-2 sm:p-3">
+              {/* Compact Video Controls - Auto-hide */}
+              <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-2 sm:p-3 transition-opacity duration-500 ease-in-out ${
+                showControls ? 'opacity-100' : 'opacity-0 pointer-events-none'
+              }`}>
                 
                 {/* Seek Bar */}
                 <div className="mb-2">
