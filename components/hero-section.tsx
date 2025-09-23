@@ -30,16 +30,37 @@ export default function HeroSection() {
   }, [])
 
   useEffect(() => {
-    // Auto-play your video when component mounts
+    // Set up video when it loads
     if (videoRef.current) {
-      videoRef.current.play().catch(() => {
-        console.log("Autoplay blocked - will play on user interaction")
-      })
+      const video = videoRef.current
+      
+      // Try autoplay when video is ready
+      const attemptAutoplay = () => {
+        video.play().then(() => {
+          setIsPlaying(true)
+          console.log("Video autoplay successful")
+        }).catch((error) => {
+          console.log("Autoplay blocked - will play on user interaction", error)
+          setIsPlaying(false)
+        })
+      }
+      
+      if (video.readyState >= 2) {
+        attemptAutoplay()
+      } else {
+        video.addEventListener('canplay', attemptAutoplay, { once: true })
+      }
     }
-  }, [])
+  }, [isVideoLoaded])
 
   const handleVideoLoaded = () => {
+    console.log("Video loaded successfully")
     setIsVideoLoaded(true)
+  }
+  
+  const handleVideoError = (error: any) => {
+    console.error("Video loading error:", error)
+    setIsVideoLoaded(true) // Show controls even if there's an error
   }
 
   const togglePlayPause = () => {
@@ -121,63 +142,66 @@ export default function HeroSection() {
               <video
                 ref={videoRef}
                 className="w-full h-full object-cover"
-                autoPlay
                 muted={isMuted}
                 loop
                 playsInline
+                preload="auto"
                 onLoadedData={handleVideoLoaded}
+                onError={handleVideoError}
                 onPlay={handleVideoPlay}
                 onPause={handleVideoPause}
+                onCanPlay={() => console.log("Video can play")}
               >
                 <source src="/videos/draft-4.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
               
               {!isVideoLoaded && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-white text-lg bg-black/50 px-4 py-2 rounded-lg">
-                    Loading your video...
+                <div className="absolute inset-0 flex items-center justify-center bg-gray-900/50">
+                  <div className="text-white text-lg bg-black/80 px-6 py-4 rounded-xl backdrop-blur-sm">
+                    <div className="flex items-center space-x-3">
+                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                      <span>Loading video...</span>
+                    </div>
                   </div>
                 </div>
               )}
               
-              {/* Custom Video Controls */}
-              {isVideoLoaded && (
-                <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center">
-                  <div className="flex space-x-3">
-                    {/* Play/Pause Button */}
-                    <button
-                      onClick={togglePlayPause}
-                      className="bg-black/70 hover:bg-black/90 text-white p-3 rounded-full transition-all duration-200 backdrop-blur-sm"
-                    >
-                      {isPlaying ? (
-                        <Pause className="w-5 h-5" />
-                      ) : (
-                        <Play className="w-5 h-5" />
-                      )}
-                    </button>
-                    
-                    {/* Mute/Unmute Button */}
-                    <button
-                      onClick={toggleMute}
-                      className="bg-black/70 hover:bg-black/90 text-white p-3 rounded-full transition-all duration-200 backdrop-blur-sm"
-                    >
-                      {isMuted ? (
-                        <VolumeX className="w-5 h-5" />
-                      ) : (
-                        <Volume2 className="w-5 h-5" />
-                      )}
-                    </button>
-                  </div>
+              {/* Custom Video Controls - Always show when loaded */}
+              <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center">
+                <div className="flex space-x-3">
+                  {/* Play/Pause Button */}
+                  <button
+                    onClick={togglePlayPause}
+                    className="bg-black/80 hover:bg-black text-white p-4 rounded-full transition-all duration-200 backdrop-blur-sm shadow-lg border border-white/20"
+                    title={isPlaying ? "Pause" : "Play"}
+                  >
+                    {isPlaying ? (
+                      <Pause className="w-6 h-6" />
+                    ) : (
+                      <Play className="w-6 h-6 ml-1" />
+                    )}
+                  </button>
                   
-                  {/* Enable Audio Hint */}
-                  {isMuted && (
-                    <div className="bg-blue-600/80 text-white px-3 py-2 rounded-lg text-sm backdrop-blur-sm">
-                      Click 🔊 for audio
-                    </div>
-                  )}
+                  {/* Mute/Unmute Button */}
+                  <button
+                    onClick={toggleMute}
+                    className="bg-black/80 hover:bg-black text-white p-4 rounded-full transition-all duration-200 backdrop-blur-sm shadow-lg border border-white/20"
+                    title={isMuted ? "Unmute" : "Mute"}
+                  >
+                    {isMuted ? (
+                      <VolumeX className="w-6 h-6" />
+                    ) : (
+                      <Volume2 className="w-6 h-6" />
+                    )}
+                  </button>
                 </div>
-              )}
+                
+                {/* Audio Status */}
+                <div className="bg-black/80 text-white px-4 py-2 rounded-lg text-sm backdrop-blur-sm shadow-lg border border-white/20">
+                  {isMuted ? "🔇 Muted" : "🔊 Audio On"}
+                </div>
+              </div>
             </div>
           </motion.div>
 
