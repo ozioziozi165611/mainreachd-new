@@ -117,7 +117,7 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center hero-gradient overflow-hidden pt-20 md:pt-24 lg:pt-32">
+    <section className="relative min-h-screen flex items-center justify-center hero-gradient overflow-hidden pt-32 md:pt-40 lg:pt-48">
       <div className="container mx-auto px-4 md:px-6 z-10 relative max-w-7xl">
         <div className="flex flex-col items-center text-center space-y-3">
           {/* Typed Headline and Button */}
