@@ -12,7 +12,7 @@ export default function HeroSection() {
 
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [isMuted, setIsMuted] = useState(false)
+  const [isMuted, setIsMuted] = useState(true)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -30,40 +30,21 @@ export default function HeroSection() {
   }, [])
 
   useEffect(() => {
-    // Set up video when it loads
-    if (videoRef.current) {
+    // Set up video when it loads - only once
+    if (videoRef.current && isVideoLoaded) {
       const video = videoRef.current
       
-      // Try autoplay when video is ready
-      const attemptAutoplay = () => {
-        // Try unmuted first
-        setIsMuted(false)
-        video.muted = false
-        
-        video.play().then(() => {
-          setIsPlaying(true)
-          console.log("Video autoplay with audio successful")
-        }).catch((error) => {
-          console.log("Autoplay with sound blocked, trying muted:", error)
-          // If unmuted fails, try muted
-          setIsMuted(true)
-          video.muted = true
-          
-          video.play().then(() => {
-            setIsPlaying(true)
-            console.log("Video autoplay muted successful - click volume to enable audio")
-          }).catch((err) => {
-            console.log("All autoplay blocked:", err)
-            setIsPlaying(false)
-          })
-        })
-      }
+      // Start muted for reliable autoplay (browser-friendly)
+      video.muted = true
+      setIsMuted(true)
       
-      if (video.readyState >= 2) {
-        attemptAutoplay()
-      } else {
-        video.addEventListener('canplay', attemptAutoplay, { once: true })
-      }
+      video.play().then(() => {
+        setIsPlaying(true)
+        console.log("Video autoplay muted successful - click volume to enable audio")
+      }).catch((error) => {
+        console.log("Video autoplay failed:", error)
+        setIsPlaying(false)
+      })
     }
   }, [isVideoLoaded])
 
@@ -95,7 +76,7 @@ export default function HeroSection() {
       videoRef.current.muted = newMutedState
       setIsMuted(newMutedState)
       
-      // Force play to ensure audio is enabled
+      // Ensure video is playing when unmuting
       if (!newMutedState && !isPlaying) {
         videoRef.current.play().then(() => {
           setIsPlaying(true)
@@ -103,9 +84,9 @@ export default function HeroSection() {
         }).catch((error) => {
           console.log("Could not start video with audio:", error)
         })
+      } else {
+        console.log(newMutedState ? "Video muted" : "Video unmuted - audio enabled")
       }
-      
-      console.log(newMutedState ? "Video muted" : "Video unmuted - audio should be playing")
     }
   }
 
@@ -149,9 +130,9 @@ export default function HeroSection() {
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto"
               >
-                <Button className="btn-primary group w-full sm:w-auto text-lg md:text-xl lg:text-2xl px-8 md:px-12 lg:px-16 py-4 md:py-6 lg:py-8">
+                <Button className="btn-primary group w-full sm:w-auto text-lg md:text-xl lg:text-2xl px-8 md:px-12 lg:px-16 py-5 md:py-7 lg:py-9 shadow-2xl border-2 border-orange-400/30 hover:border-orange-300/50 bg-gradient-to-r from-orange-500 via-orange-600 to-red-600 hover:from-orange-400 hover:via-orange-500 hover:to-red-500 transform hover:scale-105 transition-all duration-300">
                   <MessageCircle className="mr-3 md:mr-4 lg:mr-5 h-6 w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 group-hover:animate-bounce" />
-                  <span className="whitespace-nowrap font-bold">Book A Free Consultation</span>
+                  <span className="whitespace-nowrap font-bold drop-shadow-lg">Book A Free Consultation</span>
                   <ArrowRight className="ml-3 md:ml-4 lg:ml-5 h-6 w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </a>
@@ -169,7 +150,7 @@ export default function HeroSection() {
               <video
                 ref={videoRef}
                 className="w-full h-full object-cover"
-muted={isMuted}
+                muted={isMuted}
                 autoPlay
                 loop
                 playsInline
