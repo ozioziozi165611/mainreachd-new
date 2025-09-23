@@ -257,17 +257,17 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="relative min-h-[85vh] sm:min-h-screen flex items-start sm:items-center justify-center hero-gradient overflow-hidden pt-20 sm:pt-28 md:pt-40 lg:pt-48">
+    <section className="relative min-h-screen flex items-center justify-center hero-gradient overflow-hidden pt-16 sm:pt-28 md:pt-40 lg:pt-48 pb-8 sm:pb-12">
       <div className="container mx-auto px-4 md:px-6 z-10 relative max-w-7xl">
-        <div className="flex flex-col items-center text-center space-y-1 sm:space-y-3">
+        <div className="flex flex-col items-center text-center space-y-3 sm:space-y-4 md:space-y-6">
           {/* Typed Headline and Button */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.5 }}
-            className="space-y-2 sm:space-y-6 md:space-y-8 max-w-6xl px-2"
+            className="space-y-4 sm:space-y-6 md:space-y-8 max-w-6xl px-4 sm:px-6"
           >
-            <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight">
+            <h1 className="text-[1.75rem] leading-[1.2] sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white tracking-tight">
               <span className="block sm:inline">{typedText}</span>
               <span className="animate-pulse">|</span>
             </h1>
@@ -280,10 +280,10 @@ export default function HeroSection() {
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto"
               >
-                <Button className="btn-primary group w-full sm:w-auto text-lg md:text-xl lg:text-2xl px-8 md:px-12 lg:px-16 py-5 md:py-7 lg:py-9 shadow-2xl border-2 border-orange-400/30 hover:border-orange-300/50 bg-gradient-to-r from-orange-500 via-orange-600 to-red-600 hover:from-orange-400 hover:via-orange-500 hover:to-red-500 transform hover:scale-105 transition-all duration-300">
-                  <MessageCircle className="mr-3 md:mr-4 lg:mr-5 h-6 w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 group-hover:animate-bounce" />
+                <Button className="btn-primary group w-full sm:w-auto text-lg sm:text-xl md:text-xl lg:text-2xl px-8 sm:px-12 md:px-12 lg:px-16 py-4 sm:py-5 md:py-7 lg:py-9 shadow-2xl border-2 border-orange-400/40 hover:border-orange-300/60 bg-gradient-to-r from-orange-500 via-orange-600 to-red-600 hover:from-orange-400 hover:via-orange-500 hover:to-red-500 transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 rounded-2xl backdrop-blur-sm">
+                  <MessageCircle className="mr-3 sm:mr-4 md:mr-4 lg:mr-5 h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 group-hover:animate-bounce" />
                   <span className="whitespace-nowrap font-bold drop-shadow-lg">Book A Free Consultation</span>
-                  <ArrowRight className="ml-3 md:ml-4 lg:ml-5 h-6 w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="ml-3 sm:ml-4 md:ml-4 lg:ml-5 h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </a>
             </div>
@@ -293,11 +293,11 @@ export default function HeroSection() {
             initial={{ opacity: 0, scale: 0.3 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.5, delay: 1.2 }}
-            className="w-full max-w-4xl"
+            className="w-full max-w-5xl px-4 sm:px-6"
           >
             {/* Your Video - ZERO YouTube Overlays */}
             <div 
-              className="w-full aspect-video rounded-2xl overflow-hidden shadow-2xl bg-black relative cursor-pointer"
+              className="w-full aspect-video rounded-3xl overflow-hidden shadow-2xl bg-black relative cursor-pointer ring-1 ring-white/10 backdrop-blur-sm"
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               onMouseMove={handleMouseMove}
@@ -326,15 +326,15 @@ export default function HeroSection() {
               </video>
               
               
-              {/* Compact Video Controls - Auto-hide */}
-              <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-2 sm:p-3 transition-opacity duration-500 ease-in-out ${
-                showControls ? 'opacity-100' : 'opacity-0 pointer-events-none'
+              {/* iPhone-Optimized Video Controls - Auto-hide */}
+              <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-3 sm:p-4 transition-all duration-300 ease-in-out backdrop-blur-md ${
+                showControls ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-2 pointer-events-none'
               }`}>
                 
-                {/* Seek Bar */}
-                <div className="mb-2">
-                  <div className="flex items-center space-x-1 sm:space-x-2 mb-1">
-                    <span className="text-white text-xs font-mono min-w-[30px] hidden sm:block">
+                {/* iPhone-Optimized Seek Bar */}
+                <div className="mb-3">
+                  <div className="flex items-center space-x-2 sm:space-x-3 mb-2">
+                    <span className="text-white/90 text-xs font-medium min-w-[35px] tracking-wide">
                       {formatTime(currentTime)}
                     </span>
                     <div className="flex-1 relative">
@@ -348,63 +348,67 @@ export default function HeroSection() {
                         onMouseUp={() => setIsUserSeeking(false)}
                         onTouchStart={() => setIsUserSeeking(true)}
                         onTouchEnd={() => setIsUserSeeking(false)}
-                        className="w-full h-1 sm:h-2 bg-white/30 rounded-lg appearance-none cursor-pointer slider"
+                        className="w-full h-2 sm:h-2 bg-white/25 rounded-full appearance-none cursor-pointer slider touch-manipulation"
                         style={{
-                          background: `linear-gradient(to right, #ef4444 0%, #ef4444 ${duration > 0 ? (currentTime / duration) * 100 : 0}%, rgba(255,255,255,0.3) ${duration > 0 ? (currentTime / duration) * 100 : 0}%, rgba(255,255,255,0.3) 100%)`
+                          background: `linear-gradient(to right, #f97316 0%, #f97316 ${duration > 0 ? (currentTime / duration) * 100 : 0}%, rgba(255,255,255,0.25) ${duration > 0 ? (currentTime / duration) * 100 : 0}%, rgba(255,255,255,0.25) 100%)`
                         }}
                       />
                     </div>
-                    <span className="text-white text-xs font-mono min-w-[30px] hidden sm:block">
+                    <span className="text-white/90 text-xs font-medium min-w-[35px] tracking-wide">
                       {formatTime(duration)}
                     </span>
                   </div>
                 </div>
 
-                {/* Control Buttons */}
+                {/* iPhone-Optimized Control Buttons */}
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-1 sm:space-x-2">
+                  <div className="flex items-center space-x-2 sm:space-x-3">
                     {/* Rewind Button */}
                     <button
                       onClick={rewindVideo}
-                      className="bg-black/70 hover:bg-black text-white p-1.5 sm:p-2 rounded-full transition-all duration-200 backdrop-blur-sm shadow border border-white/20"
+                      className="bg-black/60 hover:bg-black/80 active:bg-black/90 text-white p-3 sm:p-3 rounded-full transition-all duration-200 backdrop-blur-md shadow-lg border border-white/30 hover:border-white/40 touch-manipulation"
                       title="Rewind 10 seconds"
                     >
-                      <Rewind className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <Rewind className="w-4 h-4 sm:w-4 sm:h-4" />
                     </button>
 
                     {/* Play/Pause Button */}
                     <button
                       onClick={togglePlayPause}
-                      className="bg-black/70 hover:bg-black text-white p-2 sm:p-2.5 rounded-full transition-all duration-200 backdrop-blur-sm shadow border border-white/20"
+                      className="bg-orange-600/80 hover:bg-orange-600 active:bg-orange-700 text-white p-3.5 sm:p-4 rounded-full transition-all duration-200 backdrop-blur-md shadow-xl border border-orange-400/40 hover:border-orange-300/60 touch-manipulation transform hover:scale-105 active:scale-95"
                       title={isPlaying ? "Pause" : "Play"}
                     >
                       {isPlaying ? (
-                        <Pause className="w-4 h-4 sm:w-5 sm:h-5" />
+                        <Pause className="w-5 h-5 sm:w-6 sm:h-6" />
                       ) : (
-                        <Play className="w-4 h-4 sm:w-5 sm:h-5 ml-0.5" />
+                        <Play className="w-5 h-5 sm:w-6 sm:h-6 ml-0.5" />
                       )}
                     </button>
 
                     {/* Fast Forward Button */}
                     <button
                       onClick={fastForwardVideo}
-                      className="bg-black/70 hover:bg-black text-white p-1.5 sm:p-2 rounded-full transition-all duration-200 backdrop-blur-sm shadow border border-white/20"
+                      className="bg-black/60 hover:bg-black/80 active:bg-black/90 text-white p-3 sm:p-3 rounded-full transition-all duration-200 backdrop-blur-md shadow-lg border border-white/30 hover:border-white/40 touch-manipulation"
                       title="Fast forward 10 seconds"
                     >
-                      <FastForward className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <FastForward className="w-4 h-4 sm:w-4 sm:h-4" />
                     </button>
 
-                    {/* Volume Controls */}
-                    <div className="flex items-center space-x-1 sm:space-x-2 ml-1 sm:ml-2">
+                    {/* iPhone-Optimized Volume Controls */}
+                    <div className="flex items-center space-x-2 sm:space-x-3 ml-2 sm:ml-3">
                       <button
                         onClick={toggleMute}
-                        className={`${isMuted ? 'bg-red-600/80 hover:bg-red-700' : 'bg-green-600/80 hover:bg-green-700'} text-white p-1.5 sm:p-2 rounded-full transition-all duration-200 backdrop-blur-sm shadow border border-white/20`}
+                        className={`${
+                          isMuted 
+                            ? 'bg-red-500/70 hover:bg-red-500/80 active:bg-red-600 border-red-400/40' 
+                            : 'bg-green-500/70 hover:bg-green-500/80 active:bg-green-600 border-green-400/40'
+                        } text-white p-3 sm:p-3 rounded-full transition-all duration-200 backdrop-blur-md shadow-lg border touch-manipulation transform hover:scale-105 active:scale-95`}
                         title={isMuted ? "Unmute" : "Mute"}
                       >
                         {isMuted ? (
-                          <VolumeX className="w-3 h-3 sm:w-4 sm:h-4" />
+                          <VolumeX className="w-4 h-4 sm:w-4 sm:h-4" />
                         ) : (
-                          <Volume2 className="w-3 h-3 sm:w-4 sm:h-4" />
+                          <Volume2 className="w-4 h-4 sm:w-4 sm:h-4" />
                         )}
                       </button>
                       
@@ -422,16 +426,16 @@ export default function HeroSection() {
                     </div>
                   </div>
                   
-                  {/* Compact Audio Status */}
+                  {/* iPhone-Style Audio Status */}
                   {isMuted && (
-                    <div className="bg-red-600/80 text-white px-2 py-1 rounded text-xs font-bold backdrop-blur-sm shadow border border-white/20">
+                    <div className="bg-red-500/90 text-white px-3 py-2 rounded-full text-xs font-semibold backdrop-blur-md shadow-lg border border-red-400/40">
                       🔇 Audio Off
                     </div>
                   )}
                   
                   {!isMuted && (
-                    <div className="bg-green-600/80 text-white px-2 py-1 rounded text-xs backdrop-blur-sm shadow border border-white/20">
-                      🔊 On
+                    <div className="bg-green-500/90 text-white px-3 py-2 rounded-full text-xs font-semibold backdrop-blur-md shadow-lg border border-green-400/40">
+                      🔊 Audio On
                     </div>
                   )}
                 </div>
@@ -439,72 +443,84 @@ export default function HeroSection() {
             </div>
           </motion.div>
 
-          {/* We've generated text - Now after video */}
+          {/* iPhone-Enhanced Revenue Statement */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 2.2 }}
-            className="space-y-6 md:space-y-8 max-w-6xl px-2"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 2.2 }}
+            className="space-y-6 md:space-y-8 max-w-6xl px-4 sm:px-6"
           >
-            <p className="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed px-2">
-              We've generated our clients <span className="text-green-400 font-bold">100k+ in revenue</span>
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-200 max-w-4xl mx-auto leading-relaxed font-medium">
+              We've generated our clients <span className="text-green-400 font-bold bg-green-400/10 px-2 py-1 rounded-lg">100k+ in revenue</span>
               <br className="hidden sm:block" />
-              <span className="block sm:inline"> Stop wasting money on ads that don't convert.</span>
+              <span className="block sm:inline mt-2 sm:mt-0"> Stop wasting money on ads that don't convert.</span>
             </p>
           </motion.div>
 
-          {/* Watch Success Stories Button */}
+          {/* iPhone-Enhanced Success Stories Button */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 2.5 }}
-            className="flex justify-center w-full px-4"
+            transition={{ duration: 0.8, delay: 2.5 }}
+            className="flex justify-center w-full px-4 sm:px-6"
           >
             <Button
               onClick={scrollToTestimonials}
-              className="btn-secondary group w-full sm:w-auto text-base md:text-lg px-6 md:px-8 py-3 md:py-4"
+              className="btn-secondary group w-full sm:w-auto text-base sm:text-lg md:text-lg px-8 sm:px-10 md:px-8 py-4 sm:py-5 md:py-4 bg-white/10 hover:bg-white/15 active:bg-white/20 backdrop-blur-md border border-white/20 hover:border-white/30 rounded-2xl transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-xl"
             >
-              <Play className="mr-2 md:mr-3 h-5 w-5 md:h-6 md:w-6 group-hover:scale-110 transition-transform" />
-              <span className="whitespace-nowrap">Watch Success Stories</span>
+              <Play className="mr-3 md:mr-3 h-5 w-5 sm:h-6 sm:w-6 md:h-6 md:w-6 group-hover:scale-110 transition-transform" />
+              <span className="whitespace-nowrap font-semibold">Watch Success Stories</span>
             </Button>
           </motion.div>
 
-          {/* Platform Integration Showcase */}
+          {/* iPhone-Enhanced Platform Showcase */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 2 }}
-            className="flex flex-col items-center justify-center space-y-4 text-gray-400 px-4"
+            transition={{ duration: 0.8, delay: 2 }}
+            className="flex flex-col items-center justify-center space-y-5 text-gray-300 px-4 sm:px-6"
           >
-            <span className="text-sm font-medium text-center">We dominate on:</span>
-            <div className="flex space-x-4 sm:space-x-6">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center overflow-hidden bg-white/10 backdrop-blur-sm">
+            <span className="text-sm font-semibold text-center tracking-wide">We dominate on:</span>
+            <div className="flex space-x-5 sm:space-x-6">
+              <motion.div 
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center overflow-hidden bg-white/15 backdrop-blur-md shadow-lg border border-white/20 hover:border-white/30 transition-all duration-300"
+              >
                 <Image
                   src="/images/instagram-logo.png"
                   alt="Instagram Logo"
-                  width={40}
-                  height={40}
-                  className="object-cover w-6 h-6 sm:w-8 sm:h-8"
+                  width={44}
+                  height={44}
+                  className="object-cover w-7 h-7 sm:w-8 sm:h-8"
                 />
-              </div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center overflow-hidden bg-white/10 backdrop-blur-sm">
+              </motion.div>
+              <motion.div 
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center overflow-hidden bg-white/15 backdrop-blur-md shadow-lg border border-white/20 hover:border-white/30 transition-all duration-300"
+              >
                 <Image
                   src="/images/facebook-logo.png"
                   alt="Facebook Logo"
-                  width={40}
-                  height={40}
-                  className="object-cover w-6 h-6 sm:w-8 sm:h-8"
+                  width={44}
+                  height={44}
+                  className="object-cover w-7 h-7 sm:w-8 sm:h-8"
                 />
-              </div>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center overflow-hidden bg-white/10 backdrop-blur-sm">
+              </motion.div>
+              <motion.div 
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center overflow-hidden bg-white/15 backdrop-blur-md shadow-lg border border-white/20 hover:border-white/30 transition-all duration-300"
+              >
                 <Image
                   src="/images/google-logo.png"
                   alt="Google Logo"
-                  width={40}
-                  height={40}
-                  className="object-cover w-6 h-6 sm:w-8 sm:h-8"
+                  width={44}
+                  height={44}
+                  className="object-cover w-7 h-7 sm:w-8 sm:h-8"
                 />
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         </div>
