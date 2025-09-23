@@ -297,7 +297,7 @@ export default function HeroSection() {
           >
             {/* VSL Player - Professional & Mobile Optimized */}
             <div 
-              className="w-full aspect-video rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl bg-black relative cursor-none sm:cursor-pointer ring-1 ring-orange-500/20 hover:ring-orange-500/40 transition-all duration-500 backdrop-blur-sm transform hover:scale-[1.01] active:scale-[0.99]"
+              className="w-full aspect-video rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl bg-black relative ring-1 ring-orange-500/20 hover:ring-orange-500/40 transition-all duration-500 backdrop-blur-sm transform hover:scale-[1.01] active:scale-[0.99] mobile-no-cursor"
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               onMouseMove={handleMouseMove}
@@ -306,7 +306,7 @@ export default function HeroSection() {
             >
               <video
                 ref={videoRef}
-                className="w-full h-full object-cover transition-all duration-300"
+                className="w-full h-full object-cover transition-all duration-300 mobile-no-cursor"
                 muted={isMuted}
                 autoPlay
                 loop
@@ -322,7 +322,13 @@ export default function HeroSection() {
                 onPause={handleVideoPause}
                 onCanPlay={() => {}}
                 onClick={handleVideoClick}
-                style={{ WebkitTransform: 'translateZ(0)' }}
+                style={{
+                  WebkitTransform: 'translateZ(0)',
+                  WebkitUserSelect: 'none',
+                  userSelect: 'none',
+                  WebkitTouchCallout: 'none',
+                  WebkitTapHighlightColor: 'transparent'
+                }}
               >
                 <source src="/videos/draft-4.mp4" type="video/mp4" />
                 Your browser does not support the video tag.

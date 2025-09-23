@@ -866,3 +866,28 @@
     margin-bottom: 1.5rem;
   }
 }
+
+/* Mobile Cursor Hide - VSL Player */
+.mobile-no-cursor {
+  cursor: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+@media (max-width: 639px) {
+  .mobile-no-cursor,
+  .mobile-no-cursor * {
+    cursor: none !important;
+    pointer-events: auto !important;
+  }
+}
+
+@media (min-width: 640px) {
+  .mobile-no-cursor {
+    cursor: pointer !important;
+  }
+}
