@@ -3,7 +3,7 @@
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
-import { ArrowRight, MessageCircle, Play, Pause, Volume2, VolumeX } from "lucide-react"
+import { ArrowRight, MessageCircle, Play, Pause, Volume2, VolumeX, RotateCcw, FastForward, Rewind } from "lucide-react"
 import { useEffect, useState, useRef } from "react"
 
 export default function HeroSection() {
@@ -13,6 +13,10 @@ export default function HeroSection() {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [isMuted, setIsMuted] = useState(false)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
+  const [isUserSeeking, setIsUserSeeking] = useState(false)
+  const [volume, setVolume] = useState(1)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -60,6 +64,10 @@ export default function HeroSection() {
 
   const handleVideoLoaded = () => {
     console.log("Video loaded successfully")
+    if (videoRef.current) {
+      setDuration(videoRef.current.duration)
+      setCurrentTime(videoRef.current.currentTime)
+    }
     setIsVideoLoaded(true)
   }
   
@@ -87,15 +95,21 @@ export default function HeroSection() {
       setIsMuted(newMutedState)
       
       // Ensure video is playing when unmuting
-      if (!newMutedState && !isPlaying) {
-        videoRef.current.play().then(() => {
-          setIsPlaying(true)
-          console.log("Audio enabled and video playing")
-        }).catch((error) => {
-          console.log("Could not start video with audio:", error)
-        })
+      if (!newMutedState) {
+        // Restore previous volume when unmuting
+        videoRef.current.volume = volume > 0 ? volume : 0.8
+        setVolume(videoRef.current.volume)
+        
+        if (!isPlaying) {
+          videoRef.current.play().then(() => {
+            setIsPlaying(true)
+            console.log("Audio enabled and video playing")
+          }).catch((error) => {
+            console.log("Could not start video with audio:", error)
+          })
+        }
       } else {
-        console.log(newMutedState ? "Video muted" : "Video unmuted - audio enabled")
+        console.log("Video muted")
       }
     }
   }
@@ -106,6 +120,61 @@ export default function HeroSection() {
 
   const handleVideoPause = () => {
     setIsPlaying(false)
+  }
+
+  const handleTimeUpdate = () => {
+    if (videoRef.current && !isUserSeeking) {
+      setCurrentTime(videoRef.current.currentTime)
+    }
+  }
+
+  const handleLoadedMetadata = () => {
+    if (videoRef.current) {
+      setDuration(videoRef.current.duration)
+      console.log("Video duration loaded:", videoRef.current.duration)
+    }
+  }
+
+  const handleSeek = (newTime: number) => {
+    if (videoRef.current && videoRef.current.duration) {
+      const clampedTime = Math.max(0, Math.min(newTime, videoRef.current.duration))
+      videoRef.current.currentTime = clampedTime
+      setCurrentTime(clampedTime)
+    }
+  }
+
+  const handleSeekBarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTime = (parseFloat(e.target.value) / 100) * duration
+    handleSeek(newTime)
+  }
+
+  const rewindVideo = () => {
+    const newTime = Math.max(0, currentTime - 10)
+    handleSeek(newTime)
+  }
+
+  const fastForwardVideo = () => {
+    const newTime = Math.min(duration, currentTime + 10)
+    handleSeek(newTime)
+  }
+
+  const formatTime = (seconds: number): string => {
+    const mins = Math.floor(seconds / 60)
+    const secs = Math.floor(seconds % 60)
+    return `${mins}:${secs.toString().padStart(2, '0')}`
+  }
+
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newVolume = parseFloat(e.target.value)
+    setVolume(newVolume)
+    if (videoRef.current) {
+      videoRef.current.volume = newVolume
+      // Auto-unmute when volume is increased
+      if (newVolume > 0 && isMuted) {
+        videoRef.current.muted = false
+        setIsMuted(false)
+      }
+    }
   }
 
 
@@ -125,7 +194,7 @@ export default function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.5 }}
-            className="space-y-8 max-w-6xl px-2"
+            className="space-y-3 sm:space-y-6 md:space-y-8 max-w-6xl px-2"
           >
             <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight">
               <span className="block sm:inline">{typedText}</span>
@@ -166,6 +235,8 @@ export default function HeroSection() {
                 playsInline
                 preload="auto"
                 onLoadedData={handleVideoLoaded}
+                onLoadedMetadata={handleLoadedMetadata}
+                onTimeUpdate={handleTimeUpdate}
                 onError={handleVideoError}
                 onPlay={handleVideoPlay}
                 onPause={handleVideoPause}
@@ -176,48 +247,113 @@ export default function HeroSection() {
               </video>
               
               
-              {/* Custom Video Controls - Always show when loaded */}
-              <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center">
-                <div className="flex space-x-3">
-                  {/* Play/Pause Button */}
-                  <button
-                    onClick={togglePlayPause}
-                    className="bg-black/80 hover:bg-black text-white p-4 rounded-full transition-all duration-200 backdrop-blur-sm shadow-lg border border-white/20"
-                    title={isPlaying ? "Pause" : "Play"}
-                  >
-                    {isPlaying ? (
-                      <Pause className="w-6 h-6" />
-                    ) : (
-                      <Play className="w-6 h-6 ml-1" />
-                    )}
-                  </button>
-                  
-                  {/* Mute/Unmute Button - Large and obvious */}
-                  <button
-                    onClick={toggleMute}
-                    className={`${isMuted ? 'bg-red-600/90 hover:bg-red-700 animate-pulse' : 'bg-green-600/90 hover:bg-green-700'} text-white p-4 rounded-full transition-all duration-200 backdrop-blur-sm shadow-lg border border-white/20`}
-                    title={isMuted ? "Click to Enable Audio" : "Mute"}
-                  >
-                    {isMuted ? (
-                      <VolumeX className="w-6 h-6" />
-                    ) : (
-                      <Volume2 className="w-6 h-6" />
-                    )}
-                  </button>
+              {/* Compact Video Controls */}
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-2 sm:p-3">
+                
+                {/* Seek Bar */}
+                <div className="mb-2">
+                  <div className="flex items-center space-x-1 sm:space-x-2 mb-1">
+                    <span className="text-white text-xs font-mono min-w-[30px] hidden sm:block">
+                      {formatTime(currentTime)}
+                    </span>
+                    <div className="flex-1 relative">
+                      <input
+                        type="range"
+                        min="0"
+                        max="100"
+                        value={duration > 0 ? (currentTime / duration) * 100 : 0}
+                        onChange={handleSeekBarChange}
+                        onMouseDown={() => setIsUserSeeking(true)}
+                        onMouseUp={() => setIsUserSeeking(false)}
+                        onTouchStart={() => setIsUserSeeking(true)}
+                        onTouchEnd={() => setIsUserSeeking(false)}
+                        className="w-full h-1 sm:h-2 bg-white/30 rounded-lg appearance-none cursor-pointer slider"
+                        style={{
+                          background: `linear-gradient(to right, #ef4444 0%, #ef4444 ${duration > 0 ? (currentTime / duration) * 100 : 0}%, rgba(255,255,255,0.3) ${duration > 0 ? (currentTime / duration) * 100 : 0}%, rgba(255,255,255,0.3) 100%)`
+                        }}
+                      />
+                    </div>
+                    <span className="text-white text-xs font-mono min-w-[30px] hidden sm:block">
+                      {formatTime(duration)}
+                    </span>
+                  </div>
                 </div>
-                
-                {/* Audio Status - More prominent */}
-                {isMuted && (
-                  <div className="bg-red-600/90 text-white px-6 py-3 rounded-lg text-sm font-bold backdrop-blur-sm shadow-lg border border-white/20 animate-pulse">
-                    🔇 CLICK 🔊 TO HEAR AUDIO
+
+                {/* Control Buttons */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-1 sm:space-x-2">
+                    {/* Rewind Button */}
+                    <button
+                      onClick={rewindVideo}
+                      className="bg-black/70 hover:bg-black text-white p-1.5 sm:p-2 rounded-full transition-all duration-200 backdrop-blur-sm shadow border border-white/20"
+                      title="Rewind 10 seconds"
+                    >
+                      <Rewind className="w-3 h-3 sm:w-4 sm:h-4" />
+                    </button>
+
+                    {/* Play/Pause Button */}
+                    <button
+                      onClick={togglePlayPause}
+                      className="bg-black/70 hover:bg-black text-white p-2 sm:p-2.5 rounded-full transition-all duration-200 backdrop-blur-sm shadow border border-white/20"
+                      title={isPlaying ? "Pause" : "Play"}
+                    >
+                      {isPlaying ? (
+                        <Pause className="w-4 h-4 sm:w-5 sm:h-5" />
+                      ) : (
+                        <Play className="w-4 h-4 sm:w-5 sm:h-5 ml-0.5" />
+                      )}
+                    </button>
+
+                    {/* Fast Forward Button */}
+                    <button
+                      onClick={fastForwardVideo}
+                      className="bg-black/70 hover:bg-black text-white p-1.5 sm:p-2 rounded-full transition-all duration-200 backdrop-blur-sm shadow border border-white/20"
+                      title="Fast forward 10 seconds"
+                    >
+                      <FastForward className="w-3 h-3 sm:w-4 sm:h-4" />
+                    </button>
+
+                    {/* Volume Controls */}
+                    <div className="flex items-center space-x-1 sm:space-x-2 ml-1 sm:ml-2">
+                      <button
+                        onClick={toggleMute}
+                        className={`${isMuted ? 'bg-red-600/80 hover:bg-red-700' : 'bg-green-600/80 hover:bg-green-700'} text-white p-1.5 sm:p-2 rounded-full transition-all duration-200 backdrop-blur-sm shadow border border-white/20`}
+                        title={isMuted ? "Unmute" : "Mute"}
+                      >
+                        {isMuted ? (
+                          <VolumeX className="w-3 h-3 sm:w-4 sm:h-4" />
+                        ) : (
+                          <Volume2 className="w-3 h-3 sm:w-4 sm:h-4" />
+                        )}
+                      </button>
+                      
+                      {/* Volume Slider - Hidden on mobile */}
+                      <input
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.1"
+                        value={isMuted ? 0 : volume}
+                        onChange={handleVolumeChange}
+                        className="w-12 sm:w-16 h-1 sm:h-2 bg-white/30 rounded-lg appearance-none cursor-pointer slider hidden sm:block"
+                        title="Volume"
+                      />
+                    </div>
                   </div>
-                )}
-                
-                {!isMuted && (
-                  <div className="bg-green-600/90 text-white px-4 py-2 rounded-lg text-sm backdrop-blur-sm shadow-lg border border-white/20">
-                    🔊 Audio Playing
-                  </div>
-                )}
+                  
+                  {/* Compact Audio Status */}
+                  {isMuted && (
+                    <div className="bg-red-600/80 text-white px-2 py-1 rounded text-xs font-bold backdrop-blur-sm shadow border border-white/20">
+                      🔇 Audio Off
+                    </div>
+                  )}
+                  
+                  {!isMuted && (
+                    <div className="bg-green-600/80 text-white px-2 py-1 rounded text-xs backdrop-blur-sm shadow border border-white/20">
+                      🔊 On
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </motion.div>
