@@ -265,15 +265,15 @@ export default function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.5 }}
-            className="space-y-0 sm:space-y-6 md:space-y-8 max-w-6xl px-4 sm:px-6"
+            className="max-w-6xl px-4 sm:px-6"
           >
-            <h1 className="text-[1.75rem] leading-[0.95] sm:text-3xl sm:leading-[1.2] md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white tracking-tight">
+            <h1 className="text-[1.75rem] leading-[0.95] sm:text-3xl sm:leading-[1.2] md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white tracking-tight mb-0">
               <span className="block sm:inline">{typedText}</span>
               <span className="animate-pulse">|</span>
             </h1>
             
             {/* Book A Free Consultation Button - Right after title */}
-            <div className="flex justify-center w-full">
+            <div className="flex justify-center w-full -mt-4 sm:mt-6 md:mt-8">
               <a
                 href="https://api.leadconnectorhq.com/widget/booking/VTZMJcf2k9axPsM9Edc8"
                 target="_blank"
