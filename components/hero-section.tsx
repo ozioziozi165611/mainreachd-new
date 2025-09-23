@@ -267,15 +267,13 @@ export default function HeroSection() {
             transition={{ duration: 1, delay: 0.5 }}
             className="max-w-6xl px-4 sm:px-6"
           >
-            <h1 className="text-[1.75rem] leading-[0.95] sm:text-3xl sm:leading-[1.2] md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white tracking-tight mb-0 select-none">
+            <h1 className="text-[1.75rem] leading-[0.95] sm:text-3xl sm:leading-[1.2] md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white tracking-tight mb-0">
               <span className="block sm:inline">{typedText}</span>
-              {typedText.length < fullText.length && (
-                <span className="animate-pulse select-none" aria-hidden="true">|</span>
-              )}
+              <span className="animate-pulse">|</span>
             </h1>
             
-            {/* Book A Free Consultation Button - Desktop/Tablet Only */}
-            <div className="hidden sm:flex justify-center w-full -mt-4 sm:mt-6 md:mt-8">
+            {/* Book A Free Consultation Button - Mobile Optimized Positioning */}
+            <div className="flex justify-center w-full -mt-4 sm:mt-6 md:mt-8">
               <a
                 href="https://api.leadconnectorhq.com/widget/booking/VTZMJcf2k9axPsM9Edc8"
                 target="_blank"
@@ -306,20 +304,6 @@ export default function HeroSection() {
               onTouchStart={handleTouch}
               onTouchMove={handleTouch}
             >
-              {/* Mobile-Only Floating Consultation Button */}
-              <div className="sm:hidden absolute right-3 bottom-[calc(env(safe-area-inset-bottom)+72px)] z-30">
-                <a
-                  href="https://api.leadconnectorhq.com/widget/booking/VTZMJcf2k9axPsM9Edc8"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Button className="px-4 py-3 rounded-full text-sm font-bold shadow-2xl border border-orange-400/40 bg-gradient-to-r from-orange-500 via-orange-600 to-red-600 hover:from-orange-400 hover:via-orange-500 hover:to-red-500 transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 backdrop-blur-sm">
-                    <MessageCircle className="mr-2 h-4 w-4" />
-                    Book Free Consultation
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </a>
-              </div>
               <video
                 ref={videoRef}
                 className="w-full h-full object-cover"
