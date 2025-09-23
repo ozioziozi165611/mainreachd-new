@@ -272,7 +272,7 @@ export default function HeroSection() {
               <span className="animate-pulse">|</span>
             </h1>
             
-            {/* Book A Free Consultation Button - Right after title */}
+            {/* Book A Free Consultation Button - Mobile Optimized Positioning */}
             <div className="flex justify-center w-full -mt-4 sm:mt-6 md:mt-8">
               <a
                 href="https://api.leadconnectorhq.com/widget/booking/VTZMJcf2k9axPsM9Edc8"
@@ -280,10 +280,10 @@ export default function HeroSection() {
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto"
               >
-                <Button className="btn-primary group w-full sm:w-auto text-lg sm:text-xl md:text-xl lg:text-2xl px-8 sm:px-12 md:px-12 lg:px-16 py-4 sm:py-5 md:py-7 lg:py-9 shadow-2xl border-2 border-orange-400/40 hover:border-orange-300/60 bg-gradient-to-r from-orange-500 via-orange-600 to-red-600 hover:from-orange-400 hover:via-orange-500 hover:to-red-500 transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 rounded-2xl backdrop-blur-sm">
-                  <MessageCircle className="mr-3 sm:mr-4 md:mr-4 lg:mr-5 h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 group-hover:animate-bounce" />
+                <Button className="btn-primary group w-full sm:w-auto text-base sm:text-xl md:text-xl lg:text-2xl px-6 sm:px-12 md:px-12 lg:px-16 py-3 sm:py-5 md:py-7 lg:py-9 shadow-2xl border-2 border-orange-400/40 hover:border-orange-300/60 bg-gradient-to-r from-orange-500 via-orange-600 to-red-600 hover:from-orange-400 hover:via-orange-500 hover:to-red-500 transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 rounded-2xl backdrop-blur-sm">
+                  <MessageCircle className="mr-2 sm:mr-4 md:mr-4 lg:mr-5 h-4 w-4 sm:h-6 sm:w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 group-hover:animate-bounce" />
                   <span className="whitespace-nowrap font-bold drop-shadow-lg">Book A Free Consultation</span>
-                  <ArrowRight className="ml-3 sm:ml-4 md:ml-4 lg:ml-5 h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="ml-2 sm:ml-4 md:ml-4 lg:ml-5 h-4 w-4 sm:h-6 sm:w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </a>
             </div>
@@ -293,7 +293,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, scale: 0.3 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.5, delay: 1.2 }}
-            className="w-full max-w-5xl px-4 sm:px-6"
+            className="w-full max-w-sm sm:max-w-3xl md:max-w-5xl px-4 sm:px-6"
           >
             {/* Your Video - ZERO YouTube Overlays */}
             <div 
