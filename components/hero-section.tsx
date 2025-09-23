@@ -91,8 +91,21 @@ export default function HeroSection() {
 
   const toggleMute = () => {
     if (videoRef.current) {
-      videoRef.current.muted = !videoRef.current.muted
-      setIsMuted(videoRef.current.muted)
+      const newMutedState = !isMuted
+      videoRef.current.muted = newMutedState
+      setIsMuted(newMutedState)
+      
+      // Force play to ensure audio is enabled
+      if (!newMutedState && !isPlaying) {
+        videoRef.current.play().then(() => {
+          setIsPlaying(true)
+          console.log("Audio enabled and video playing")
+        }).catch((error) => {
+          console.log("Could not start video with audio:", error)
+        })
+      }
+      
+      console.log(newMutedState ? "Video muted" : "Video unmuted - audio should be playing")
     }
   }
 
@@ -188,11 +201,11 @@ muted={isMuted}
                     )}
                   </button>
                   
-                  {/* Mute/Unmute Button */}
+                  {/* Mute/Unmute Button - Large and obvious */}
                   <button
                     onClick={toggleMute}
-                    className="bg-black/80 hover:bg-black text-white p-4 rounded-full transition-all duration-200 backdrop-blur-sm shadow-lg border border-white/20"
-                    title={isMuted ? "Unmute" : "Mute"}
+                    className={`${isMuted ? 'bg-red-600/90 hover:bg-red-700 animate-pulse' : 'bg-green-600/90 hover:bg-green-700'} text-white p-4 rounded-full transition-all duration-200 backdrop-blur-sm shadow-lg border border-white/20`}
+                    title={isMuted ? "Click to Enable Audio" : "Mute"}
                   >
                     {isMuted ? (
                       <VolumeX className="w-6 h-6" />
@@ -202,10 +215,18 @@ muted={isMuted}
                   </button>
                 </div>
                 
-                {/* Audio Status */}
-                <div className="bg-black/80 text-white px-4 py-2 rounded-lg text-sm backdrop-blur-sm shadow-lg border border-white/20">
-                  {isMuted ? "🔇 Muted" : "🔊 Audio On"}
-                </div>
+                {/* Audio Status - More prominent */}
+                {isMuted && (
+                  <div className="bg-red-600/90 text-white px-6 py-3 rounded-lg text-sm font-bold backdrop-blur-sm shadow-lg border border-white/20 animate-pulse">
+                    🔇 CLICK 🔊 TO HEAR AUDIO
+                  </div>
+                )}
+                
+                {!isMuted && (
+                  <div className="bg-green-600/90 text-white px-4 py-2 rounded-lg text-sm backdrop-blur-sm shadow-lg border border-white/20">
+                    🔊 Audio Playing
+                  </div>
+                )}
               </div>
             </div>
           </motion.div>
