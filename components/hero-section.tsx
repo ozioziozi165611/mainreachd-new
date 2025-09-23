@@ -12,7 +12,7 @@ export default function HeroSection() {
 
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [isMuted, setIsMuted] = useState(true)
+  const [isMuted, setIsMuted] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -36,12 +36,26 @@ export default function HeroSection() {
       
       // Try autoplay when video is ready
       const attemptAutoplay = () => {
+        // Try unmuted first
+        setIsMuted(false)
+        video.muted = false
+        
         video.play().then(() => {
           setIsPlaying(true)
-          console.log("Video autoplay successful")
+          console.log("Video autoplay with audio successful")
         }).catch((error) => {
-          console.log("Autoplay blocked - will play on user interaction", error)
-          setIsPlaying(false)
+          console.log("Autoplay with sound blocked, trying muted:", error)
+          // If unmuted fails, try muted
+          setIsMuted(true)
+          video.muted = true
+          
+          video.play().then(() => {
+            setIsPlaying(true)
+            console.log("Video autoplay muted successful - click volume to enable audio")
+          }).catch((err) => {
+            console.log("All autoplay blocked:", err)
+            setIsPlaying(false)
+          })
         })
       }
       
@@ -142,7 +156,8 @@ export default function HeroSection() {
               <video
                 ref={videoRef}
                 className="w-full h-full object-cover"
-                muted={isMuted}
+muted={isMuted}
+                autoPlay
                 loop
                 playsInline
                 preload="auto"
@@ -156,16 +171,6 @@ export default function HeroSection() {
                 Your browser does not support the video tag.
               </video>
               
-              {!isVideoLoaded && (
-                <div className="absolute inset-0 flex items-center justify-center bg-gray-900/50">
-                  <div className="text-white text-lg bg-black/80 px-6 py-4 rounded-xl backdrop-blur-sm">
-                    <div className="flex items-center space-x-3">
-                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
-                      <span>Loading video...</span>
-                    </div>
-                  </div>
-                </div>
-              )}
               
               {/* Custom Video Controls - Always show when loaded */}
               <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center">
