@@ -149,10 +149,10 @@ export default function HeroSection() {
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto"
               >
-                <Button className="btn-primary group w-full sm:w-auto text-base md:text-lg px-6 md:px-8 py-3 md:py-4">
-                  <MessageCircle className="mr-2 md:mr-3 h-5 w-5 md:h-6 md:w-6 group-hover:animate-bounce" />
-                  <span className="whitespace-nowrap">Book A Free Consultation</span>
-                  <ArrowRight className="ml-2 md:ml-3 h-5 w-5 md:h-6 md:w-6 group-hover:translate-x-1 transition-transform" />
+                <Button className="btn-primary group w-full sm:w-auto text-lg md:text-xl lg:text-2xl px-8 md:px-12 lg:px-16 py-4 md:py-6 lg:py-8">
+                  <MessageCircle className="mr-3 md:mr-4 lg:mr-5 h-6 w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 group-hover:animate-bounce" />
+                  <span className="whitespace-nowrap font-bold">Book A Free Consultation</span>
+                  <ArrowRight className="ml-3 md:ml-4 lg:ml-5 h-6 w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </a>
             </div>
