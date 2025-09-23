@@ -46,18 +46,14 @@ export default function HeroSection() {
       
       video.play().then(() => {
         setIsPlaying(true)
-        console.log("Video autoplay WITH AUDIO successful! 🔊")
       }).catch((error) => {
-        console.log("Autoplay with audio blocked by browser, trying muted:", error)
         // Browser blocked audio autoplay, fallback to muted
         video.muted = true
         setIsMuted(true)
         
         video.play().then(() => {
           setIsPlaying(true)
-          console.log("Video autoplay muted successful - click 🔊 for audio")
         }).catch((err) => {
-          console.log("All autoplay blocked:", err)
           setIsPlaying(false)
         })
       })
@@ -65,17 +61,11 @@ export default function HeroSection() {
   }, [isVideoLoaded])
 
   const handleVideoLoaded = () => {
-    console.log("Video loaded successfully")
-    console.log("Video element:", videoRef.current)
-    console.log("Video readyState:", videoRef.current?.readyState)
-    console.log("Video duration:", videoRef.current?.duration)
     if (videoRef.current) {
       setDuration(videoRef.current.duration)
       setCurrentTime(videoRef.current.currentTime)
-      console.log("Set duration to:", videoRef.current.duration, "currentTime to:", videoRef.current.currentTime)
     }
     setIsVideoLoaded(true)
-    console.log("isVideoLoaded set to true")
   }
   
   const handleVideoError = (error: any) => {
@@ -84,28 +74,21 @@ export default function HeroSection() {
   }
 
   const togglePlayPause = () => {
-    console.log("Play/Pause button clicked, isPlaying:", isPlaying)
     if (videoRef.current) {
       if (isPlaying) {
-        console.log("Pausing video")
         videoRef.current.pause()
         setIsPlaying(false)
       } else {
-        console.log("Playing video")
         videoRef.current.play().then(() => {
           setIsPlaying(true)
-          console.log("Video play successful")
         }).catch((error) => {
-          console.log("Video play failed:", error)
+          // Silently handle play failures
         })
       }
-    } else {
-      console.log("Video ref not available")
     }
   }
 
   const toggleMute = () => {
-    console.log("Volume/Mute button clicked, isMuted:", isMuted)
     if (videoRef.current) {
       const newMutedState = !isMuted
       videoRef.current.muted = newMutedState
@@ -116,21 +99,15 @@ export default function HeroSection() {
         // Restore previous volume when unmuting
         videoRef.current.volume = volume > 0 ? volume : 0.8
         setVolume(videoRef.current.volume)
-        console.log("Unmuted video, volume set to:", videoRef.current.volume)
         
         if (!isPlaying) {
           videoRef.current.play().then(() => {
             setIsPlaying(true)
-            console.log("Audio enabled and video playing")
           }).catch((error) => {
-            console.log("Could not start video with audio:", error)
+            // Silently handle play failures
           })
         }
-      } else {
-        console.log("Video muted")
       }
-    } else {
-      console.log("Video ref not available for mute toggle")
     }
   }
 
@@ -151,39 +128,30 @@ export default function HeroSection() {
   const handleLoadedMetadata = () => {
     if (videoRef.current) {
       setDuration(videoRef.current.duration)
-      console.log("Video duration loaded:", videoRef.current.duration)
     }
   }
 
   const handleSeek = (newTime: number) => {
-    console.log("Seeking to time:", newTime, "duration:", duration)
     if (videoRef.current && videoRef.current.duration) {
       const clampedTime = Math.max(0, Math.min(newTime, videoRef.current.duration))
-      console.log("Setting video currentTime to:", clampedTime)
       videoRef.current.currentTime = clampedTime
       setCurrentTime(clampedTime)
-    } else {
-      console.log("Cannot seek - video ref or duration not available")
     }
   }
 
   const handleSeekBarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newTime = (parseFloat(e.target.value) / 100) * duration
-    setShowControls(true) // Show controls during seeking
+    setShowControls(true)
     handleSeek(newTime)
   }
 
   const rewindVideo = () => {
-    console.log("Rewind button clicked, current time:", currentTime)
     const newTime = Math.max(0, currentTime - 10)
-    console.log("Rewinding to:", newTime)
     handleSeek(newTime)
   }
 
   const fastForwardVideo = () => {
-    console.log("Fast forward button clicked, current time:", currentTime)
     const newTime = Math.min(duration, currentTime + 10)
-    console.log("Fast forwarding to:", newTime)
     handleSeek(newTime)
   }
 
@@ -289,15 +257,15 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center hero-gradient overflow-hidden pt-32 md:pt-40 lg:pt-48">
+    <section className="relative min-h-[85vh] sm:min-h-screen flex items-start sm:items-center justify-center hero-gradient overflow-hidden pt-20 sm:pt-28 md:pt-40 lg:pt-48">
       <div className="container mx-auto px-4 md:px-6 z-10 relative max-w-7xl">
-        <div className="flex flex-col items-center text-center space-y-3">
+        <div className="flex flex-col items-center text-center space-y-1 sm:space-y-3">
           {/* Typed Headline and Button */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.5 }}
-            className="space-y-3 sm:space-y-6 md:space-y-8 max-w-6xl px-2"
+            className="space-y-2 sm:space-y-6 md:space-y-8 max-w-6xl px-2"
           >
             <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight">
               <span className="block sm:inline">{typedText}</span>
@@ -350,7 +318,7 @@ export default function HeroSection() {
                 onError={handleVideoError}
                 onPlay={handleVideoPlay}
                 onPause={handleVideoPause}
-                onCanPlay={() => console.log("Video can play")}
+                onCanPlay={() => {}}
                 onClick={handleVideoClick}
               >
                 <source src="/videos/draft-4.mp4" type="video/mp4" />
