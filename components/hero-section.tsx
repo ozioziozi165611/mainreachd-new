@@ -641,8 +641,8 @@ export default function HeroSection() {
             transition={{ duration: 0.8, delay: 2.2 }}
             className="space-y-6 md:space-y-8 max-w-6xl px-4 sm:px-6"
           >
-            <p className="text-lg sm:text-xl md:text-2xl text-gray-200 max-w-4xl mx-auto leading-relaxed font-medium">
-              We've generated our clients <span className="text-green-400 font-bold bg-green-400/10 px-2 py-1 rounded-lg">100k+ in revenue</span> Stop wasting money on ads that don't convert.
+            <p className="text-sm sm:text-xl md:text-2xl text-gray-200 max-w-5xl mx-auto leading-relaxed font-medium text-center px-1 sm:px-2">
+              We've generated our clients <span className="text-green-400 font-bold bg-green-400/10 px-1 sm:px-2 py-1 rounded-lg whitespace-nowrap">100k+ in revenue</span> Stop wasting money on ads that don't convert.
             </p>
           </motion.div>
 
