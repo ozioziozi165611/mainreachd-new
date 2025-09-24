@@ -54,15 +54,24 @@ export default function HeroSection() {
       const video = videoRef.current
       
       if (isMobile) {
-        // Mobile: Start muted (required for autoplay to work)
-        video.muted = true
-        setIsMuted(true)
+        // Mobile: Try autoplay with audio first, fallback to muted
+        video.muted = false
+        setIsMuted(false)
         
         video.play().then(() => {
           setIsPlaying(true)
         }).catch((error) => {
-          console.log('Mobile autoplay failed:', error)
-          setIsPlaying(false)
+          console.log('Mobile autoplay with audio failed, trying muted:', error)
+          // Browser blocked audio autoplay, fallback to muted
+          video.muted = true
+          setIsMuted(true)
+          
+          video.play().then(() => {
+            setIsPlaying(true)
+          }).catch((err) => {
+            console.log('Mobile autoplay completely failed:', err)
+            setIsPlaying(false)
+          })
         })
       } else {
         // Desktop: Try autoplay with audio first
@@ -94,11 +103,8 @@ export default function HeroSection() {
     // Apply mobile-specific video settings when mobile detection changes
     if (videoRef.current && videoLoaded && mobileDetected) {
       const video = videoRef.current
-      // Ensure mobile video stays muted until user interaction
-      if (video.muted === false && !video.played.length) {
-        video.muted = true
-        setIsMuted(true)
-      }
+      // Allow mobile videos to play with audio (will fallback to muted if blocked)
+      // No longer forcing muted state
     }
   }, [mobileDetected, videoLoaded])
 
