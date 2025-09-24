@@ -412,10 +412,10 @@ export default function HeroSection() {
                 Your browser does not support the video tag.
               </video>
               
-              {/* Mobile Audio Indicator - Tap to Enable Audio */}
+              {/* Mobile Audio Indicator - Small Icon Bottom Left */}
               {isMobile && isMuted && isPlaying && (
-                <div className="absolute top-4 right-4 bg-orange-500/90 text-white px-3 py-2 rounded-full text-sm font-bold backdrop-blur-lg shadow-xl border-2 border-orange-400/60 animate-pulse">
-                  🔊 Tap to Enable Audio
+                <div className="absolute bottom-4 left-4 bg-black/60 text-white p-2 rounded-full backdrop-blur-lg shadow-lg">
+                  <VolumeX className="w-4 h-4" />
                 </div>
               )}
               
