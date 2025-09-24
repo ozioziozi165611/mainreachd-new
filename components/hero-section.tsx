@@ -8,6 +8,7 @@ import { useEffect, useState, useRef } from "react"
 
 export default function HeroSection() {
   const [typedText, setTypedText] = useState("")
+  const [isTypingComplete, setIsTypingComplete] = useState(false)
   const fullText = "See How Local AUSSIE Businesses Have DOUBLED Their Revenue Through Meta Marketing"
 
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
@@ -30,6 +31,10 @@ export default function HeroSection() {
         index++
       } else {
         clearInterval(timer)
+        // Hide cursor after typing is complete
+        setTimeout(() => {
+          setIsTypingComplete(true)
+        }, 1000) // Wait 1 second after typing completes
       }
     }, 50)
 
@@ -49,18 +54,12 @@ export default function HeroSection() {
   }, [])
 
   useEffect(() => {
-    // Set up video when it loads - try audio first
+    // Set up video when it loads - mobile-optimized audio handling
     if (videoRef.current && isVideoLoaded) {
       const video = videoRef.current
       
-      // Try autoplay with audio first (user's preference)
-      video.muted = false
-      setIsMuted(false)
-      
-      video.play().then(() => {
-        setIsPlaying(true)
-      }).catch((error) => {
-        // Browser blocked audio autoplay, fallback to muted
+      if (isMobile) {
+        // Mobile: Start muted due to autoplay restrictions
         video.muted = true
         setIsMuted(true)
         
@@ -69,9 +68,27 @@ export default function HeroSection() {
         }).catch((err) => {
           setIsPlaying(false)
         })
-      })
+      } else {
+        // Desktop: Try autoplay with audio first
+        video.muted = false
+        setIsMuted(false)
+        
+        video.play().then(() => {
+          setIsPlaying(true)
+        }).catch((error) => {
+          // Browser blocked audio autoplay, fallback to muted
+          video.muted = true
+          setIsMuted(true)
+          
+          video.play().then(() => {
+            setIsPlaying(true)
+          }).catch((err) => {
+            setIsPlaying(false)
+          })
+        })
+      }
     }
-  }, [isVideoLoaded])
+  }, [isVideoLoaded, isMobile])
 
   const handleVideoLoaded = () => {
     if (videoRef.current) {
@@ -303,7 +320,7 @@ export default function HeroSection() {
           >
             <h1 className="text-[1.75rem] leading-[0.95] sm:text-3xl sm:leading-[1.2] md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white tracking-tight mb-0">
               <span className="block sm:inline">{typedText}</span>
-              <span className="animate-pulse">|</span>
+              {!isTypingComplete && <span className="animate-pulse">|</span>}
             </h1>
             
             {/* Book A Free Consultation Button - Mobile Optimized Positioning */}
