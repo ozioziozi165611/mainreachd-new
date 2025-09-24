@@ -279,24 +279,9 @@ export default function HeroSection() {
 
   const handleVideoClick = () => {
     if (isMobile) {
-      // On mobile, enable audio on first interaction if muted
-      if (isMuted && videoRef.current) {
-        videoRef.current.muted = false
-        setIsMuted(false)
-        // Show brief feedback that audio is now enabled
-        setShowControls(true)
-        setTimeout(() => setShowControls(false), 1500)
-      } else {
-        // Normal play/pause toggle
-        togglePlayPause()
-        // Briefly show controls then auto-hide
-        setShowControls(true)
-        setTimeout(() => {
-          if (!isUserSeeking) {
-            setShowControls(false)
-          }
-        }, 800)
-      }
+      // On mobile, just show controls for audio control
+      setShowControls(true)
+      setTimeout(() => setShowControls(false), 2000)
     } else {
       // Desktop behavior - show controls and toggle play
       setShowControls(true)
@@ -387,7 +372,6 @@ export default function HeroSection() {
                 className="w-full h-full object-cover transition-all duration-300 mobile-no-cursor"
                 muted={isMuted}
                 autoPlay
-                loop
                 playsInline
                 preload="auto"
                 webkit-playsinline="true"
@@ -398,6 +382,12 @@ export default function HeroSection() {
                 onError={handleVideoError}
                 onPlay={handleVideoPlay}
                 onPause={handleVideoPause}
+                onEnded={() => {
+                  if (videoRef.current) {
+                    videoRef.current.currentTime = 0;
+                    videoRef.current.play();
+                  }
+                }}
                 onCanPlay={() => {}}
                 onClick={handleVideoClick}
                 style={{
@@ -412,11 +402,24 @@ export default function HeroSection() {
                 Your browser does not support the video tag.
               </video>
               
-              {/* Mobile Audio Indicator - Small Icon Bottom Left */}
-              {isMobile && isMuted && isPlaying && (
-                <div className="absolute bottom-4 left-4 bg-black/60 text-white p-2 rounded-full backdrop-blur-lg shadow-lg">
+              {/* Audio Control - Only On Hover/Touch */}
+              {showControls && isMuted && (
+                <button
+                  onClick={toggleMute}
+                  className="absolute bottom-4 left-4 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-lg shadow-lg transition-all duration-300"
+                  title="Unmute"
+                >
                   <VolumeX className="w-4 h-4" />
-                </div>
+                </button>
+              )}
+              {showControls && !isMuted && (
+                <button
+                  onClick={toggleMute}
+                  className="absolute bottom-4 left-4 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-lg shadow-lg transition-all duration-300"
+                  title="Mute"
+                >
+                  <Volume2 className="w-4 h-4" />
+                </button>
               )}
               
               {/* VSL Controls - Mobile Simplified & Desktop Professional */}
@@ -459,22 +462,9 @@ export default function HeroSection() {
                   </div>
                 )}
 
-                {/* Control Buttons - Mobile Simplified / Desktop Full */}
+                {/* Control Buttons - Desktop Only */}
                 <div className="flex items-center justify-center">
-                  {isMobile ? (
-                    /* Mobile: Only Play/Pause Button */
-                    <button
-                      onClick={togglePlayPause}
-                      className="bg-gradient-to-r from-orange-600 via-orange-500 to-red-600 hover:from-orange-500 hover:via-orange-400 hover:to-red-500 active:from-orange-700 active:via-orange-600 active:to-red-700 text-white p-3 rounded-full transition-all duration-300 backdrop-blur-lg shadow-2xl border-2 border-orange-400/60 touch-manipulation transform active:scale-95"
-                      title={isPlaying ? "Pause" : "Play"}
-                    >
-                      {isPlaying ? (
-                        <Pause className="w-5 h-5" />
-                      ) : (
-                        <Play className="w-5 h-5 ml-0.5" />
-                      )}
-                    </button>
-                  ) : (
+                  {!isMobile && (
                     /* Desktop: Full Controls */
                     <div className="flex items-center justify-between w-full">
                       <div className="flex items-center space-x-1.5 sm:space-x-2 md:space-x-3">
