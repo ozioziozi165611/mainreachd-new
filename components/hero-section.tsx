@@ -3,7 +3,7 @@
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
-import { ArrowRight, MessageCircle, Play, Pause, Volume2, VolumeX, RotateCcw, FastForward, Rewind } from "lucide-react"
+import { ArrowRight, MessageCircle, Play, Pause, Volume2, VolumeX, RotateCcw, FastForward, Rewind, Maximize, Minimize } from "lucide-react"
 import { useEffect, useState, useRef } from "react"
 
 export default function HeroSection() {
@@ -18,6 +18,7 @@ export default function HeroSection() {
   const [showControls, setShowControls] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [currentText, setCurrentText] = useState("See How Local AUSSIE Businesses Have DOUBLED Their Revenue Through Meta Marketing")
+  const [isFullscreen, setIsFullscreen] = useState(false)
   
   const mobileText = "See How Local AUSSIE Businesses Have DOUBLED Their Revenue Through Meta Marketing"
   const desktopText = "See How Local AUSSIE Businesses Have DOUBLED Their Revenue Through Meta Marketing"
@@ -334,6 +335,54 @@ export default function HeroSection() {
     }
   }
 
+  const toggleFullscreen = () => {
+    if (!videoRef.current) return
+
+    if (!isFullscreen) {
+      if (videoRef.current.requestFullscreen) {
+        videoRef.current.requestFullscreen()
+      } else if ((videoRef.current as any).webkitRequestFullscreen) {
+        // Safari
+        ;(videoRef.current as any).webkitRequestFullscreen()
+      } else if ((videoRef.current as any).mozRequestFullScreen) {
+        // Firefox
+        ;(videoRef.current as any).mozRequestFullScreen()
+      } else if ((videoRef.current as any).msRequestFullscreen) {
+        // IE/Edge
+        ;(videoRef.current as any).msRequestFullscreen()
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen()
+      } else if ((document as any).webkitExitFullscreen) {
+        ;(document as any).webkitExitFullscreen()
+      } else if ((document as any).mozCancelFullScreen) {
+        ;(document as any).mozCancelFullScreen()
+      } else if ((document as any).msExitFullscreen) {
+        ;(document as any).msExitFullscreen()
+      }
+    }
+  }
+
+  // Listen for fullscreen changes
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement))
+    }
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange)
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange)
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange)
+    document.addEventListener('MSFullscreenChange', handleFullscreenChange)
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange)
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange)
+      document.removeEventListener('mozfullscreenchange', handleFullscreenChange)
+      document.removeEventListener('MSFullscreenChange', handleFullscreenChange)
+    }
+  }, [])
+
   return (
     <section className="relative min-h-screen flex items-center justify-center hero-gradient overflow-hidden pt-16 sm:pt-28 md:pt-40 lg:pt-48 pb-8 sm:pb-12">
       <div className="container mx-auto px-4 md:px-6 z-10 relative max-w-7xl">
@@ -434,6 +483,21 @@ export default function HeroSection() {
                   title="Mute"
                 >
                   <Volume2 className="w-4 h-4" />
+                </button>
+              )}
+              
+              {/* Fullscreen Button - Shows on Both Mobile and Desktop */}
+              {showControls && (
+                <button
+                  onClick={toggleFullscreen}
+                  className="absolute bottom-4 right-4 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-lg shadow-lg transition-all duration-300"
+                  title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
+                >
+                  {isFullscreen ? (
+                    <Minimize className="w-4 h-4" />
+                  ) : (
+                    <Maximize className="w-4 h-4" />
+                  )}
                 </button>
               )}
               
@@ -549,19 +613,19 @@ export default function HeroSection() {
                         </div>
                       </div>
                       
-                      {/* VSL Audio Status - Desktop Only */}
+                      {/* VSL Fullscreen Button - Desktop Only (Additional) */}
                       <div className="hidden sm:flex">
-                        {isMuted && (
-                          <div className="bg-red-500/90 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold backdrop-blur-lg shadow-xl border-2 border-red-400/60 ring-2 ring-red-500/30">
-                            🔇 Muted
-                          </div>
-                        )}
-                        
-                        {!isMuted && (
-                          <div className="bg-green-500/90 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold backdrop-blur-lg shadow-xl border-2 border-green-400/60 ring-2 ring-green-500/30">
-                            🔊 Audio
-                          </div>
-                        )}
+                        <button
+                          onClick={toggleFullscreen}
+                          className="bg-blue-500/80 hover:bg-blue-500/90 active:bg-blue-600 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold backdrop-blur-lg shadow-xl border-2 border-blue-400/60 ring-2 ring-blue-500/30 transition-all duration-300 transform hover:scale-110 active:scale-95"
+                          title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
+                        >
+                          {isFullscreen ? (
+                            <><Minimize className="w-3 h-3 sm:w-4 sm:h-4 inline mr-1" /> Exit</>
+                          ) : (
+                            <><Maximize className="w-3 h-3 sm:w-4 sm:h-4 inline mr-1" /> Full</>
+                          )}
+                        </button>
                       </div>
                     </div>
                   )}
@@ -578,9 +642,7 @@ export default function HeroSection() {
             className="space-y-6 md:space-y-8 max-w-6xl px-4 sm:px-6"
           >
             <p className="text-lg sm:text-xl md:text-2xl text-gray-200 max-w-4xl mx-auto leading-relaxed font-medium">
-              We've generated our clients <span className="text-green-400 font-bold bg-green-400/10 px-2 py-1 rounded-lg">100k+ in revenue</span>
-              <br className="hidden sm:block" />
-              <span className="block sm:inline mt-2 sm:mt-0"> Stop wasting money on ads that don't convert.</span>
+              We've generated our clients <span className="text-green-400 font-bold bg-green-400/10 px-2 py-1 rounded-lg">100k+ in revenue</span> Stop wasting money on ads that don't convert.
             </p>
           </motion.div>
 
