@@ -17,7 +17,8 @@ export default function HeroSection() {
   const [duration, setDuration] = useState(0)
   const [isUserSeeking, setIsUserSeeking] = useState(false)
   const [volume, setVolume] = useState(1)
-  const [showControls, setShowControls] = useState(true)
+  const [showControls, setShowControls] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const hideControlsTimer = useRef<NodeJS.Timeout | null>(null)
 
@@ -33,6 +34,18 @@ export default function HeroSection() {
     }, 50)
 
     return () => clearInterval(timer)
+  }, [])
+
+  // Mobile detection effect
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
   useEffect(() => {
@@ -174,7 +187,7 @@ export default function HeroSection() {
     }
   }
 
-  // Auto-hide controls functionality
+  // Auto-hide controls functionality - Mobile optimized
   const startHideControlsTimer = () => {
     // Only hide controls if video is playing and user is not seeking
     if (!isPlaying || isUserSeeking) {
@@ -184,9 +197,12 @@ export default function HeroSection() {
     if (hideControlsTimer.current) {
       clearTimeout(hideControlsTimer.current)
     }
+    
+    // Much shorter timer for mobile devices for cleaner experience
+    const hideDelay = isMobile ? 1200 : 3000
     hideControlsTimer.current = setTimeout(() => {
       setShowControls(false)
-    }, 3000) // Hide after 3 seconds of inactivity
+    }, hideDelay)
   }
 
   const clearHideControlsTimer = () => {
@@ -210,22 +226,40 @@ export default function HeroSection() {
     startHideControlsTimer()
   }
 
-  // Touch/mobile handlers
+  // Touch/mobile handlers - Enhanced for mobile experience
   const handleTouch = () => {
-    setShowControls(true)
-    clearHideControlsTimer()
-    startHideControlsTimer()
+    if (isMobile) {
+      // On mobile, toggle controls visibility for cleaner interface
+      setShowControls(!showControls)
+      if (!showControls) {
+        clearHideControlsTimer()
+        startHideControlsTimer()
+      }
+    } else {
+      setShowControls(true)
+      clearHideControlsTimer()
+      startHideControlsTimer()
+    }
   }
 
   const handleVideoClick = () => {
-    // Toggle play/pause on click/tap and show controls
-    setShowControls(true)
-    clearHideControlsTimer()
-    togglePlayPause()
-    // Keep controls visible for 4 seconds after interaction
-    setTimeout(() => {
+    if (isMobile) {
+      // On mobile, just toggle play/pause for cleaner experience
+      togglePlayPause()
+      // Briefly show controls then auto-hide
+      setShowControls(true)
+      setTimeout(() => {
+        if (!isUserSeeking) {
+          setShowControls(false)
+        }
+      }, 800)
+    } else {
+      // Desktop behavior - show controls and toggle play
+      setShowControls(true)
+      clearHideControlsTimer()
+      togglePlayPause()
       startHideControlsTimer()
-    }, 1000)
+    }
   }
 
   // Clean up timer on component unmount
@@ -335,125 +369,147 @@ export default function HeroSection() {
               </video>
               
               
-              {/* VSL Controls - Professional & Touch-Optimized */}
-              <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/95 via-black/70 to-transparent p-2 sm:p-3 md:p-4 transition-all duration-500 ease-out backdrop-blur-lg border-t border-white/10 ${
+              {/* VSL Controls - Mobile Simplified & Desktop Professional */}
+              <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/95 via-black/70 to-transparent transition-all duration-500 ease-out backdrop-blur-lg border-t border-white/10 ${
                 showControls ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-3 pointer-events-none'
+              } ${
+                isMobile ? 'p-1.5' : 'p-2 sm:p-3 md:p-4'
               }`}>
                 
-                {/* VSL Progress Bar - Enhanced Mobile Experience */}
-                <div className="mb-2 sm:mb-3">
-                  <div className="flex items-center space-x-2 sm:space-x-3 mb-1 sm:mb-2">
-                    <span className="text-white/95 text-xs sm:text-sm font-semibold min-w-[35px] sm:min-w-[40px] tracking-wide">
-                      {formatTime(currentTime)}
-                    </span>
-                    <div className="flex-1 relative">
-                      <input
-                        type="range"
-                        min="0"
-                        max="100"
-                        value={duration > 0 ? (currentTime / duration) * 100 : 0}
-                        onChange={handleSeekBarChange}
-                        onMouseDown={() => setIsUserSeeking(true)}
-                        onMouseUp={() => setIsUserSeeking(false)}
-                        onTouchStart={() => setIsUserSeeking(true)}
-                        onTouchEnd={() => setIsUserSeeking(false)}
-                        className="w-full h-2 sm:h-3 bg-white/30 rounded-full appearance-none cursor-pointer slider touch-manipulation hover:h-3 sm:hover:h-4 transition-all duration-200"
-                        style={{
-                          background: `linear-gradient(to right, #ea580c 0%, #f97316 ${duration > 0 ? (currentTime / duration) * 100 : 0}%, rgba(255,255,255,0.3) ${duration > 0 ? (currentTime / duration) * 100 : 0}%, rgba(255,255,255,0.3) 100%)`,
-                          WebkitAppearance: 'none',
-                          outline: 'none'
-                        }}
-                      />
+                {/* Progress Bar - Simplified for Mobile */}
+                {!isMobile && (
+                  <div className="mb-2 sm:mb-3">
+                    <div className="flex items-center space-x-2 sm:space-x-3 mb-1 sm:mb-2">
+                      <span className="text-white/95 text-xs sm:text-sm font-semibold min-w-[35px] sm:min-w-[40px] tracking-wide">
+                        {formatTime(currentTime)}
+                      </span>
+                      <div className="flex-1 relative">
+                        <input
+                          type="range"
+                          min="0"
+                          max="100"
+                          value={duration > 0 ? (currentTime / duration) * 100 : 0}
+                          onChange={handleSeekBarChange}
+                          onMouseDown={() => setIsUserSeeking(true)}
+                          onMouseUp={() => setIsUserSeeking(false)}
+                          onTouchStart={() => setIsUserSeeking(true)}
+                          onTouchEnd={() => setIsUserSeeking(false)}
+                          className="w-full h-2 sm:h-3 bg-white/30 rounded-full appearance-none cursor-pointer slider touch-manipulation hover:h-3 sm:hover:h-4 transition-all duration-200"
+                          style={{
+                            background: `linear-gradient(to right, #ea580c 0%, #f97316 ${duration > 0 ? (currentTime / duration) * 100 : 0}%, rgba(255,255,255,0.3) ${duration > 0 ? (currentTime / duration) * 100 : 0}%, rgba(255,255,255,0.3) 100%)`,
+                            WebkitAppearance: 'none',
+                            outline: 'none'
+                          }}
+                        />
+                      </div>
+                      <span className="text-white/95 text-xs sm:text-sm font-semibold min-w-[35px] sm:min-w-[40px] tracking-wide">
+                        {formatTime(duration)}
+                      </span>
                     </div>
-                    <span className="text-white/95 text-xs sm:text-sm font-semibold min-w-[35px] sm:min-w-[40px] tracking-wide">
-                      {formatTime(duration)}
-                    </span>
                   </div>
-                </div>
+                )}
 
-                {/* VSL Control Buttons - Touch-Optimized */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-1.5 sm:space-x-2 md:space-x-3">
-                    {/* Rewind Button - Enhanced */}
-                    <button
-                      onClick={rewindVideo}
-                      className="bg-black/70 hover:bg-black/85 active:bg-black/95 text-white p-2.5 sm:p-3 md:p-3.5 rounded-full transition-all duration-300 backdrop-blur-lg shadow-xl border border-white/40 hover:border-white/60 touch-manipulation transform hover:scale-110 active:scale-95 hover:shadow-2xl"
-                      title="Rewind 10 seconds"
-                    >
-                      <Rewind className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5" />
-                    </button>
-
-                    {/* Play/Pause Button - Enhanced VSL Style */}
+                {/* Control Buttons - Mobile Simplified / Desktop Full */}
+                <div className="flex items-center justify-center">
+                  {isMobile ? (
+                    /* Mobile: Only Play/Pause Button */
                     <button
                       onClick={togglePlayPause}
-                      className="bg-gradient-to-r from-orange-600 via-orange-500 to-red-600 hover:from-orange-500 hover:via-orange-400 hover:to-red-500 active:from-orange-700 active:via-orange-600 active:to-red-700 text-white p-3 sm:p-4 md:p-5 rounded-full transition-all duration-300 backdrop-blur-lg shadow-2xl border-2 border-orange-400/60 hover:border-orange-300/80 touch-manipulation transform hover:scale-110 active:scale-95 ring-2 ring-orange-500/30 hover:ring-orange-400/50"
+                      className="bg-gradient-to-r from-orange-600 via-orange-500 to-red-600 hover:from-orange-500 hover:via-orange-400 hover:to-red-500 active:from-orange-700 active:via-orange-600 active:to-red-700 text-white p-3 rounded-full transition-all duration-300 backdrop-blur-lg shadow-2xl border-2 border-orange-400/60 touch-manipulation transform active:scale-95"
                       title={isPlaying ? "Pause" : "Play"}
                     >
                       {isPlaying ? (
-                        <Pause className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
+                        <Pause className="w-5 h-5" />
                       ) : (
-                        <Play className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 ml-0.5" />
+                        <Play className="w-5 h-5 ml-0.5" />
                       )}
                     </button>
+                  ) : (
+                    /* Desktop: Full Controls */
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex items-center space-x-1.5 sm:space-x-2 md:space-x-3">
+                        {/* Rewind Button - Enhanced */}
+                        <button
+                          onClick={rewindVideo}
+                          className="bg-black/70 hover:bg-black/85 active:bg-black/95 text-white p-2.5 sm:p-3 md:p-3.5 rounded-full transition-all duration-300 backdrop-blur-lg shadow-xl border border-white/40 hover:border-white/60 touch-manipulation transform hover:scale-110 active:scale-95 hover:shadow-2xl"
+                          title="Rewind 10 seconds"
+                        >
+                          <Rewind className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5" />
+                        </button>
 
-                    {/* Fast Forward Button - Enhanced */}
-                    <button
-                      onClick={fastForwardVideo}
-                      className="bg-black/70 hover:bg-black/85 active:bg-black/95 text-white p-2.5 sm:p-3 md:p-3.5 rounded-full transition-all duration-300 backdrop-blur-lg shadow-xl border border-white/40 hover:border-white/60 touch-manipulation transform hover:scale-110 active:scale-95 hover:shadow-2xl"
-                      title="Fast forward 10 seconds"
-                    >
-                      <FastForward className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5" />
-                    </button>
+                        {/* Play/Pause Button - Enhanced VSL Style */}
+                        <button
+                          onClick={togglePlayPause}
+                          className="bg-gradient-to-r from-orange-600 via-orange-500 to-red-600 hover:from-orange-500 hover:via-orange-400 hover:to-red-500 active:from-orange-700 active:via-orange-600 active:to-red-700 text-white p-3 sm:p-4 md:p-5 rounded-full transition-all duration-300 backdrop-blur-lg shadow-2xl border-2 border-orange-400/60 hover:border-orange-300/80 touch-manipulation transform hover:scale-110 active:scale-95 ring-2 ring-orange-500/30 hover:ring-orange-400/50"
+                          title={isPlaying ? "Pause" : "Play"}
+                        >
+                          {isPlaying ? (
+                            <Pause className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
+                          ) : (
+                            <Play className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 ml-0.5" />
+                          )}
+                        </button>
 
-                    {/* VSL Volume Controls - Mobile Optimized */}
-                    <div className="flex items-center space-x-1.5 sm:space-x-2 md:space-x-3 ml-1 sm:ml-2 md:ml-3">
-                      <button
-                        onClick={toggleMute}
-                        className={`${
-                          isMuted 
-                            ? 'bg-red-500/80 hover:bg-red-500/90 active:bg-red-600 border-red-400/60 ring-red-500/30' 
-                            : 'bg-green-500/80 hover:bg-green-500/90 active:bg-green-600 border-green-400/60 ring-green-500/30'
-                        } text-white p-2.5 sm:p-3 md:p-3.5 rounded-full transition-all duration-300 backdrop-blur-lg shadow-xl border-2 touch-manipulation transform hover:scale-110 active:scale-95 ring-2 hover:shadow-2xl`}
-                        title={isMuted ? "Unmute" : "Mute"}
-                      >
-                        {isMuted ? (
-                          <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5" />
-                        ) : (
-                          <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5" />
-                        )}
-                      </button>
+                        {/* Fast Forward Button - Enhanced */}
+                        <button
+                          onClick={fastForwardVideo}
+                          className="bg-black/70 hover:bg-black/85 active:bg-black/95 text-white p-2.5 sm:p-3 md:p-3.5 rounded-full transition-all duration-300 backdrop-blur-lg shadow-xl border border-white/40 hover:border-white/60 touch-manipulation transform hover:scale-110 active:scale-95 hover:shadow-2xl"
+                          title="Fast forward 10 seconds"
+                        >
+                          <FastForward className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5" />
+                        </button>
+
+                        {/* VSL Volume Controls - Desktop Only */}
+                        <div className="flex items-center space-x-1.5 sm:space-x-2 md:space-x-3 ml-1 sm:ml-2 md:ml-3">
+                          <button
+                            onClick={toggleMute}
+                            className={`${
+                              isMuted 
+                                ? 'bg-red-500/80 hover:bg-red-500/90 active:bg-red-600 border-red-400/60 ring-red-500/30' 
+                                : 'bg-green-500/80 hover:bg-green-500/90 active:bg-green-600 border-green-400/60 ring-green-500/30'
+                            } text-white p-2.5 sm:p-3 md:p-3.5 rounded-full transition-all duration-300 backdrop-blur-lg shadow-xl border-2 touch-manipulation transform hover:scale-110 active:scale-95 ring-2 hover:shadow-2xl`}
+                            title={isMuted ? "Unmute" : "Mute"}
+                          >
+                            {isMuted ? (
+                              <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5" />
+                            ) : (
+                              <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5" />
+                            )}
+                          </button>
+                          
+                          {/* Volume Slider - Desktop Only */}
+                          <input
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.1"
+                            value={isMuted ? 0 : volume}
+                            onChange={handleVolumeChange}
+                            className="w-10 sm:w-12 md:w-16 h-1.5 sm:h-2 bg-white/40 rounded-lg appearance-none cursor-pointer slider hidden md:block hover:bg-white/50 transition-all duration-200"
+                            title="Volume"
+                            style={{
+                              background: `linear-gradient(to right, #16a34a 0%, #16a34a ${(isMuted ? 0 : volume) * 100}%, rgba(255,255,255,0.4) ${(isMuted ? 0 : volume) * 100}%, rgba(255,255,255,0.4) 100%)`
+                            }}
+                          />
+                        </div>
+                      </div>
                       
-                      {/* Volume Slider - Desktop Only */}
-                      <input
-                        type="range"
-                        min="0"
-                        max="1"
-                        step="0.1"
-                        value={isMuted ? 0 : volume}
-                        onChange={handleVolumeChange}
-                        className="w-10 sm:w-12 md:w-16 h-1.5 sm:h-2 bg-white/40 rounded-lg appearance-none cursor-pointer slider hidden md:block hover:bg-white/50 transition-all duration-200"
-                        title="Volume"
-                        style={{
-                          background: `linear-gradient(to right, #16a34a 0%, #16a34a ${(isMuted ? 0 : volume) * 100}%, rgba(255,255,255,0.4) ${(isMuted ? 0 : volume) * 100}%, rgba(255,255,255,0.4) 100%)`
-                        }}
-                      />
+                      {/* VSL Audio Status - Desktop Only */}
+                      <div className="hidden sm:flex">
+                        {isMuted && (
+                          <div className="bg-red-500/90 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold backdrop-blur-lg shadow-xl border-2 border-red-400/60 ring-2 ring-red-500/30">
+                            🔇 Muted
+                          </div>
+                        )}
+                        
+                        {!isMuted && (
+                          <div className="bg-green-500/90 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold backdrop-blur-lg shadow-xl border-2 border-green-400/60 ring-2 ring-green-500/30">
+                            🔊 Audio
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                  
-                  {/* VSL Audio Status - Mobile Optimized */}
-                  <div className="hidden sm:flex">
-                    {isMuted && (
-                      <div className="bg-red-500/90 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold backdrop-blur-lg shadow-xl border-2 border-red-400/60 ring-2 ring-red-500/30">
-                        🔇 Muted
-                      </div>
-                    )}
-                    
-                    {!isMuted && (
-                      <div className="bg-green-500/90 text-white px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold backdrop-blur-lg shadow-xl border-2 border-green-400/60 ring-2 ring-green-500/30">
-                        🔊 Audio
-                      </div>
-                    )}
-                  </div>
+                  )}
                 </div>
               </div>
             </div>
