@@ -49,29 +49,58 @@ export default function HeroSection() {
   }, [])
 
   useEffect(() => {
-    // Set up video when it loads - try audio first
+    // Set up video when it loads - mobile-aware autoplay
     if (videoRef.current && isVideoLoaded) {
       const video = videoRef.current
       
-      // Try autoplay with audio first (user's preference)
-      video.muted = false
-      setIsMuted(false)
-      
-      video.play().then(() => {
-        setIsPlaying(true)
-      }).catch((error) => {
-        // Browser blocked audio autoplay, fallback to muted
+      if (isMobile) {
+        // Mobile: Start muted (required for autoplay to work)
         video.muted = true
         setIsMuted(true)
         
         video.play().then(() => {
           setIsPlaying(true)
-        }).catch((err) => {
+        }).catch((error) => {
+          console.log('Mobile autoplay failed:', error)
           setIsPlaying(false)
         })
-      })
+      } else {
+        // Desktop: Try autoplay with audio first
+        video.muted = false
+        setIsMuted(false)
+        
+        video.play().then(() => {
+          setIsPlaying(true)
+        }).catch((error) => {
+          // Browser blocked audio autoplay, fallback to muted
+          video.muted = true
+          setIsMuted(true)
+          
+          video.play().then(() => {
+            setIsPlaying(true)
+          }).catch((err) => {
+            setIsPlaying(false)
+          })
+        })
+      }
     }
-  }, [isVideoLoaded])
+  }, [isVideoLoaded, isMobile])
+  
+  // Fix dependency warning by ensuring stable dependencies
+  const mobileDetected = isMobile
+  const videoLoaded = isVideoLoaded
+  
+  useEffect(() => {
+    // Apply mobile-specific video settings when mobile detection changes
+    if (videoRef.current && videoLoaded && mobileDetected) {
+      const video = videoRef.current
+      // Ensure mobile video stays muted until user interaction
+      if (video.muted === false && !video.played.length) {
+        video.muted = true
+        setIsMuted(true)
+      }
+    }
+  }, [mobileDetected, videoLoaded])
 
   const handleVideoLoaded = () => {
     if (videoRef.current) {
@@ -112,6 +141,12 @@ export default function HeroSection() {
         // Restore previous volume when unmuting
         videoRef.current.volume = volume > 0 ? volume : 0.8
         setVolume(videoRef.current.volume)
+        
+        // On mobile, show controls briefly when enabling audio
+        if (isMobile) {
+          setShowControls(true)
+          setTimeout(() => setShowControls(false), 2000)
+        }
         
         if (!isPlaying) {
           videoRef.current.play().then(() => {
@@ -244,15 +279,24 @@ export default function HeroSection() {
 
   const handleVideoClick = () => {
     if (isMobile) {
-      // On mobile, just toggle play/pause for cleaner experience
-      togglePlayPause()
-      // Briefly show controls then auto-hide
-      setShowControls(true)
-      setTimeout(() => {
-        if (!isUserSeeking) {
-          setShowControls(false)
-        }
-      }, 800)
+      // On mobile, enable audio on first interaction if muted
+      if (isMuted && videoRef.current) {
+        videoRef.current.muted = false
+        setIsMuted(false)
+        // Show brief feedback that audio is now enabled
+        setShowControls(true)
+        setTimeout(() => setShowControls(false), 1500)
+      } else {
+        // Normal play/pause toggle
+        togglePlayPause()
+        // Briefly show controls then auto-hide
+        setShowControls(true)
+        setTimeout(() => {
+          if (!isUserSeeking) {
+            setShowControls(false)
+          }
+        }, 800)
+      }
     } else {
       // Desktop behavior - show controls and toggle play
       setShowControls(true)
@@ -368,6 +412,12 @@ export default function HeroSection() {
                 Your browser does not support the video tag.
               </video>
               
+              {/* Mobile Audio Indicator - Tap to Enable Audio */}
+              {isMobile && isMuted && isPlaying && (
+                <div className="absolute top-4 right-4 bg-orange-500/90 text-white px-3 py-2 rounded-full text-sm font-bold backdrop-blur-lg shadow-xl border-2 border-orange-400/60 animate-pulse">
+                  🔊 Tap to Enable Audio
+                </div>
+              )}
               
               {/* VSL Controls - Mobile Simplified & Desktop Professional */}
               <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/95 via-black/70 to-transparent transition-all duration-500 ease-out backdrop-blur-lg border-t border-white/10 ${
