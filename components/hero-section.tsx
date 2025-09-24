@@ -8,8 +8,6 @@ import { useEffect, useState, useRef } from "react"
 
 export default function HeroSection() {
   const [typedText, setTypedText] = useState("")
-  const fullText = "See How Local AUSSIE Businesses Have DOUBLED Their Revenue Through Meta Marketing"
-
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [isMuted, setIsMuted] = useState(false)
@@ -19,14 +17,18 @@ export default function HeroSection() {
   const [volume, setVolume] = useState(1)
   const [showControls, setShowControls] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [currentText, setCurrentText] = useState("See How Local AUSSIE Businesses Have DOUBLED Their Revenue Through Meta Marketing")
+  
+  const mobileText = "See How Local AUSSIE Businesses Have DOUBLED Their Revenue Through Meta Marketing"
+  const desktopText = "See How Local AUSSIE Businesses Have DOUBLED Their Revenue Through Meta Marketing"
   const videoRef = useRef<HTMLVideoElement>(null)
   const hideControlsTimer = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     let index = 0
     const timer = setInterval(() => {
-      if (index < fullText.length) {
-        setTypedText(fullText.slice(0, index + 1))
+      if (index < currentText.length) {
+        setTypedText(currentText.slice(0, index + 1))
         index++
       } else {
         clearInterval(timer)
@@ -34,7 +36,7 @@ export default function HeroSection() {
     }, 50)
 
     return () => clearInterval(timer)
-  }, [])
+  }, [currentText])
 
   // Mobile detection effect
   useEffect(() => {
@@ -47,6 +49,13 @@ export default function HeroSection() {
     
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
+  
+  // Update text based on mobile detection
+  useEffect(() => {
+    const newText = isMobile ? mobileText : desktopText
+    setCurrentText(newText)
+    setTypedText("") // Reset typed text to restart animation
+  }, [isMobile, mobileText, desktopText])
 
   useEffect(() => {
     // Set up video when it loads - mobile-aware autoplay
