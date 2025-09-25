@@ -91,8 +91,30 @@ export default function VideoPerformanceInteractive() {
   const [hasError, setHasError] = useState(false)
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const [isMobile, setIsMobile] = useState(false)
+  const [controlsTimeout, setControlsTimeout] = useState<NodeJS.Timeout | null>(null)
+  const justShownByTouchRef = useRef(false)
 
   const [player, setPlayer] = useState<any>(null)
+
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (controlsTimeout) {
+        clearTimeout(controlsTimeout)
+      }
+    }
+  }, [controlsTimeout])
 
   useEffect(() => {
     const initializeVideo = async () => {
@@ -314,9 +336,36 @@ export default function VideoPerformanceInteractive() {
                 ref={containerRef}
                 className="relative bg-black group cursor-pointer overflow-hidden"
                 style={{ aspectRatio: "9/16", height: "500px" }}
-                onMouseEnter={() => setShowControls(true)}
-                onMouseLeave={() => setShowControls(false)}
-                onClick={handlePlayPause}
+                onMouseEnter={() => !isMobile && setShowControls(true)}
+                onMouseLeave={() => !isMobile && setShowControls(false)}
+                onTouchStart={() => {
+                  if (isMobile) {
+                    if (!showControls) {
+                      justShownByTouchRef.current = true
+                      setShowControls(true)
+                    } else {
+                      // Clear suppression flag and refresh timer when controls already visible
+                      justShownByTouchRef.current = false
+                    }
+                    // Clear existing timeout and reset hide timer
+                    if (controlsTimeout) {
+                      clearTimeout(controlsTimeout)
+                    }
+                    const newTimeout = setTimeout(() => {
+                      setShowControls(false)
+                    }, 3000)
+                    setControlsTimeout(newTimeout)
+                  }
+                }}
+                onClick={(e) => {
+                  // On mobile, prevent playback if controls were just shown by touch
+                  if (isMobile && justShownByTouchRef.current) {
+                    e.preventDefault()
+                    justShownByTouchRef.current = false
+                    return
+                  }
+                  handlePlayPause()
+                }}
               >
                 {!hasError ? (
                   <div
@@ -337,16 +386,40 @@ export default function VideoPerformanceInteractive() {
                   </div>
                 )}
 
-                {/* Minimal Controls - Only show on hover */}
+                {/* Minimal Controls - Show on hover (desktop) or always on mobile */}
                 <div
-                  className={`absolute inset-0 transition-opacity duration-300 ${showControls && !isPlaying ? "opacity-100" : "opacity-0"} pointer-events-none`}
+                  className={`absolute inset-0 transition-opacity duration-300 ${
+                    isMobile 
+                      ? (showControls ? "opacity-100" : "opacity-0")
+                      : (showControls && !isPlaying ? "opacity-100" : "opacity-0")
+                  } pointer-events-none`}
                 >
                   {/* Center Play Button Only */}
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-auto">
                     <button
-                      onClick={handlePlayPause}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        // On mobile, suppress action if controls were just shown by touch
+                        if (isMobile && justShownByTouchRef.current) {
+                          e.preventDefault()
+                          justShownByTouchRef.current = false
+                          return
+                        }
+                        handlePlayPause()
+                        // On mobile, clear suppression flag and reset the hide timer
+                        if (isMobile) {
+                          justShownByTouchRef.current = false
+                          if (controlsTimeout) {
+                            clearTimeout(controlsTimeout)
+                          }
+                          const newTimeout = setTimeout(() => {
+                            setShowControls(false)
+                          }, 3000)
+                          setControlsTimeout(newTimeout)
+                        }
+                      }}
                       disabled={!isVideoReady}
-                      className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-300 hover:bg-white/30 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-300 hover:bg-white/30 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
                     >
                       {isLoading ? (
                         <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -363,9 +436,26 @@ export default function VideoPerformanceInteractive() {
                     <button
                       onClick={(e) => {
                         e.stopPropagation()
+                        // On mobile, suppress action if controls were just shown by touch
+                        if (isMobile && justShownByTouchRef.current) {
+                          e.preventDefault()
+                          justShownByTouchRef.current = false
+                          return
+                        }
                         handleMuteToggle()
+                        // On mobile, clear suppression flag and reset the hide timer
+                        if (isMobile) {
+                          justShownByTouchRef.current = false
+                          if (controlsTimeout) {
+                            clearTimeout(controlsTimeout)
+                          }
+                          const newTimeout = setTimeout(() => {
+                            setShowControls(false)
+                          }, 3000)
+                          setControlsTimeout(newTimeout)
+                        }
                       }}
-                      className="w-10 h-10 bg-black/40 rounded-full flex items-center justify-center backdrop-blur-sm hover:bg-black/60 transition-all duration-200"
+                      className="w-10 h-10 bg-black/40 rounded-full flex items-center justify-center backdrop-blur-sm hover:bg-black/60 transition-all duration-200 touch-manipulation"
                     >
                       {isMuted ? (
                         <VolumeX className="w-5 h-5 text-white" />
