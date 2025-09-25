@@ -94,26 +94,9 @@ export default function VideoPerformanceInteractive() {
 
   const [player, setPlayer] = useState<any>(null)
 
-  // Component mount debugging
   useEffect(() => {
-    console.log("[VideoPerformance] Component mounted, starting initialization")
-    console.log("[VideoPerformance] Initial state - isLoading:", isLoading, "hasError:", hasError)
-    return () => {
-      console.log("[VideoPerformance] Component unmounting")
-    }
-  }, [])
-
-  // Debug state changes
-  useEffect(() => {
-    console.log("[VideoPerformance] State changed - isLoading:", isLoading, "hasError:", hasError, "isVideoReady:", isVideoReady)
-  }, [isLoading, hasError, isVideoReady])
-
-  useEffect(() => {
-    console.log("[VideoPerformance] YouTube initialization useEffect triggered")
-    
     const initializeVideo = async () => {
       try {
-        console.log("[VideoPerformance] Loading YouTube API for performance video")
         setIsLoading(true)
         setHasError(false)
         
@@ -123,7 +106,6 @@ export default function VideoPerformanceInteractive() {
         )
         
         await Promise.race([loadYouTubeAPI(), timeoutPromise])
-        console.log("[VideoPerformance] YouTube API loaded successfully")
         
         if (!isYouTubeAPIReady()) {
           console.error("[VideoPerformance] YouTube API not ready after loading")
@@ -131,8 +113,6 @@ export default function VideoPerformanceInteractive() {
           setIsLoading(false)
           return
         }
-        
-        console.log("[VideoPerformance] Creating YouTube player with video ID:", gutterGurusData.youtubeId)
 
         const newPlayer = new window.YT.Player("performance-youtube-player", {
           height: "100%",
@@ -176,8 +156,6 @@ export default function VideoPerformanceInteractive() {
             },
             onError: (event: any) => {
               console.error("[VideoPerformance] YouTube player error:", event.data)
-              console.error("[VideoPerformance] Error details - Video ID:", gutterGurusData.youtubeId)
-              console.error("[VideoPerformance] Error event:", event)
               setHasError(true)
               setIsLoading(false)
             },
