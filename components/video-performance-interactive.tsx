@@ -94,19 +94,45 @@ export default function VideoPerformanceInteractive() {
 
   const [player, setPlayer] = useState<any>(null)
 
+  // Component mount debugging
   useEffect(() => {
+    console.log("[VideoPerformance] Component mounted, starting initialization")
+    console.log("[VideoPerformance] Initial state - isLoading:", isLoading, "hasError:", hasError)
+    return () => {
+      console.log("[VideoPerformance] Component unmounting")
+    }
+  }, [])
+
+  // Debug state changes
+  useEffect(() => {
+    console.log("[VideoPerformance] State changed - isLoading:", isLoading, "hasError:", hasError, "isVideoReady:", isVideoReady)
+  }, [isLoading, hasError, isVideoReady])
+
+  useEffect(() => {
+    console.log("[VideoPerformance] YouTube initialization useEffect triggered")
+    
     const initializeVideo = async () => {
       try {
-        console.log("[v0] Loading YouTube API for performance video")
-        await loadYouTubeAPI()
-        console.log("[v0] YouTube API ready for performance video")
+        console.log("[VideoPerformance] Loading YouTube API for performance video")
+        setIsLoading(true)
+        setHasError(false)
+        
+        // Add timeout to prevent hanging
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('YouTube API timeout')), 10000)
+        )
+        
+        await Promise.race([loadYouTubeAPI(), timeoutPromise])
+        console.log("[VideoPerformance] YouTube API loaded successfully")
         
         if (!isYouTubeAPIReady()) {
-          console.error("[v0] YouTube API not ready after loading")
+          console.error("[VideoPerformance] YouTube API not ready after loading")
           setHasError(true)
           setIsLoading(false)
           return
         }
+        
+        console.log("[VideoPerformance] Creating YouTube player with video ID:", gutterGurusData.youtubeId)
 
         const newPlayer = new window.YT.Player("performance-youtube-player", {
           height: "100%",
@@ -149,7 +175,9 @@ export default function VideoPerformanceInteractive() {
               }
             },
             onError: (event: any) => {
-              console.log("[v0] YouTube player error:", event.data)
+              console.error("[VideoPerformance] YouTube player error:", event.data)
+              console.error("[VideoPerformance] Error details - Video ID:", gutterGurusData.youtubeId)
+              console.error("[VideoPerformance] Error event:", event)
               setHasError(true)
               setIsLoading(false)
             },
@@ -162,6 +190,9 @@ export default function VideoPerformanceInteractive() {
         setIsLoading(false)
       }
     }
+
+    // Actually call the initialization function
+    initializeVideo()
 
     return () => {
       if (player && typeof player.destroy === "function") {
