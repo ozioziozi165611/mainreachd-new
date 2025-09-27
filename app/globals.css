@@ -223,6 +223,13 @@
   color: hsl(var(--brand-secondary));
   border: 2px solid hsl(var(--brand-accent));
   font-weight: 600;
+  /* Mobile-first touch optimizations */
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 44px;
+  min-width: 44px;
   transition: all 0.3s ease;
   box-shadow: 0 4px 14px hsla(84, 81%, 44%, 0.3);
 }
@@ -240,11 +247,67 @@
   border: 2px solid hsl(var(--brand-primary));
   font-weight: 500;
   transition: all 0.3s ease;
+  /* Mobile-first touch optimizations */
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 44px;
+  min-width: 44px;
 }
 
 .cta-secondary:hover {
   background: hsla(200, 100%, 50%, 0.1);
   border-color: hsl(200 100% 60%);
+}
+
+.cta-secondary:active {
+  background: hsla(200, 100%, 50%, 0.2);
+  transform: scale(0.95);
+}
+
+/* Mobile touch improvements for all buttons */
+.btn-primary {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 44px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:active {
+  transform: scale(0.95);
+}
+
+/* CTA Enhanced Classes */
+.cta-primary-enhanced {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 44px;
+  min-width: 44px;
+  transition: all 0.3s ease;
+}
+
+.cta-primary-enhanced:active {
+  transform: scale(0.95);
+}
+
+/* WhatsApp Button Styles */
+.whatsapp-chat {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 44px;
+  min-width: 44px;
+  transition: all 0.3s ease;
+}
+
+.whatsapp-chat:active {
+  transform: scale(0.95);
 }
 
 /* Enhanced Glass System */

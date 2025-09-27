@@ -407,7 +407,7 @@ export default function HeroSection() {
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto"
               >
-                <Button className="btn-primary group w-full sm:w-auto text-base sm:text-xl md:text-xl lg:text-2xl px-6 sm:px-12 md:px-12 lg:px-16 py-3 sm:py-5 md:py-7 lg:py-9 shadow-2xl border-2 border-orange-400/40 hover:border-orange-300/60 bg-gradient-to-r from-orange-500 via-orange-600 to-red-600 hover:from-orange-400 hover:via-orange-500 hover:to-red-500 transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 rounded-2xl backdrop-blur-sm">
+                <Button className="btn-primary group w-full sm:w-auto text-base sm:text-xl md:text-xl lg:text-2xl px-6 sm:px-12 md:px-12 lg:px-16 py-3 sm:py-5 md:py-7 lg:py-9 shadow-2xl border-2 border-orange-400/40 hover:border-orange-300/60 bg-gradient-to-r from-orange-500 via-orange-600 to-red-600 hover:from-orange-400 hover:via-orange-500 hover:to-red-500 transform hover:scale-[1.02] active:scale-[0.95] transition-all duration-300 rounded-2xl backdrop-blur-sm touch-manipulation select-none min-h-[44px]">
                   <MessageCircle className="mr-2 sm:mr-4 md:mr-4 lg:mr-5 h-4 w-4 sm:h-6 sm:w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 group-hover:animate-bounce" />
                   <span className="whitespace-nowrap font-bold drop-shadow-lg">Book A Free Consultation</span>
                   <ArrowRight className="ml-2 sm:ml-4 md:ml-4 lg:ml-5 h-4 w-4 sm:h-6 sm:w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 group-hover:translate-x-1 transition-transform" />
@@ -470,7 +470,7 @@ export default function HeroSection() {
               {showControls && isMuted && (
                 <button
                   onClick={toggleMute}
-                  className="absolute bottom-4 left-4 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-lg shadow-lg transition-all duration-300"
+                  className="absolute bottom-4 left-4 bg-black/60 hover:bg-black/80 active:bg-black/90 text-white p-3 min-w-[44px] min-h-[44px] rounded-full backdrop-blur-lg shadow-lg transition-all duration-300 touch-manipulation select-none flex items-center justify-center"
                   title="Unmute"
                 >
                   <VolumeX className="w-4 h-4" />
@@ -479,7 +479,7 @@ export default function HeroSection() {
               {showControls && !isMuted && (
                 <button
                   onClick={toggleMute}
-                  className="absolute bottom-4 left-4 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-lg shadow-lg transition-all duration-300"
+                  className="absolute bottom-4 left-4 bg-black/60 hover:bg-black/80 active:bg-black/90 text-white p-3 min-w-[44px] min-h-[44px] rounded-full backdrop-blur-lg shadow-lg transition-all duration-300 touch-manipulation select-none flex items-center justify-center"
                   title="Mute"
                 >
                   <Volume2 className="w-4 h-4" />
@@ -490,7 +490,7 @@ export default function HeroSection() {
               {showControls && (
                 <button
                   onClick={toggleFullscreen}
-                  className="absolute bottom-4 right-4 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-lg shadow-lg transition-all duration-300"
+                  className="absolute bottom-4 right-4 bg-black/60 hover:bg-black/80 active:bg-black/90 text-white p-3 min-w-[44px] min-h-[44px] rounded-full backdrop-blur-lg shadow-lg transition-all duration-300 touch-manipulation select-none flex items-center justify-center"
                   title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
                 >
                   {isFullscreen ? (
