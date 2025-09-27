@@ -399,7 +399,7 @@ export default function VideoPerformanceInteractive() {
                         }
                       }}
                       disabled={!isVideoReady}
-                      className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm transition-all duration-300 hover:bg-white/30 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation active:bg-white/40 active:scale-95 select-none"
+                      className="video-control-button video-play-large bg-white/20 backdrop-blur-sm hover:bg-white/30 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed active:bg-white/40"
                     >
                       {isLoading ? (
                         <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -428,7 +428,7 @@ export default function VideoPerformanceInteractive() {
                           setControlsTimeout(newTimeout)
                         }
                       }}
-                      className="w-10 h-10 bg-black/40 rounded-full flex items-center justify-center backdrop-blur-sm hover:bg-black/60 transition-all duration-200 touch-manipulation active:bg-black/70 active:scale-95 select-none"
+                      className="video-control-button bg-black/40 backdrop-blur-sm hover:bg-black/60 active:bg-black/70"
                     >
                       {isMuted ? (
                         <VolumeX className="w-5 h-5 text-white" />

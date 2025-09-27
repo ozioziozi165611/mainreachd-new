@@ -954,3 +954,282 @@
     cursor: pointer !important;
   }
 }
+
+/* ===== COMPREHENSIVE MOBILE BUTTON SYSTEM ===== */
+
+/* Universal Button Reset and Optimization */
+button, .btn, [role="button"], input[type="button"], input[type="submit"] {
+  touch-action: manipulation !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+  -webkit-touch-callout: none !important;
+  -webkit-user-drag: none !important;
+  -khtml-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  cursor: pointer !important;
+  outline: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Enhanced Button Base Class */
+.mobile-enhanced-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px;
+  min-height: 48px !important;
+  min-width: 100px;
+  padding: 12px 24px !important;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.mobile-enhanced-button:active {
+  transform: scale(0.96) !important;
+  transition: all 0.1s ease !important;
+}
+
+/* Override all CTA classes for mobile */
+.btn-primary,
+.cta-primary,
+.cta-primary-enhanced,
+.cta-secondary,
+.whatsapp-chat {
+  touch-action: manipulation !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+  -webkit-touch-callout: none !important;
+  min-height: 48px !important;
+  padding: 12px 24px !important;
+  border-radius: 12px !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  cursor: pointer !important;
+  outline: none !important;
+}
+
+.btn-primary:active,
+.cta-primary:active,
+.cta-primary-enhanced:active,
+.cta-secondary:active,
+.whatsapp-chat:active {
+  transform: scale(0.96) !important;
+  transition: all 0.1s ease !important;
+}
+
+/* Video Control Button Enhancements */
+.video-control-button {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
+  padding: 12px !important;
+  border-radius: 50% !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  touch-action: manipulation !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+  -webkit-touch-callout: none !important;
+  outline: none !important;
+}
+
+.video-control-button:active {
+  transform: scale(0.95) !important;
+  transition: all 0.1s ease !important;
+}
+
+/* Large Play Button */
+.video-play-large {
+  min-width: 80px !important;
+  min-height: 80px !important;
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 640px) {
+  .btn-primary,
+  .cta-primary,
+  .cta-primary-enhanced,
+  .cta-secondary,
+  .whatsapp-chat,
+  .mobile-enhanced-button {
+    min-height: 52px !important;
+    padding: 16px 32px !important;
+    font-size: 16px !important;
+    border-radius: 16px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  .video-control-button {
+    min-width: 52px !important;
+    min-height: 52px !important;
+    padding: 14px !important;
+  }
+  
+  .video-play-large {
+    min-width: 88px !important;
+    min-height: 88px !important;
+  }
+}
+
+/* Floating WhatsApp Button */
+.floating-whatsapp {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  width: 60px !important;
+  height: 60px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 1000 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  touch-action: manipulation !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+  -webkit-touch-callout: none !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.floating-whatsapp:active {
+  transform: scale(0.95) !important;
+}
+
+@media (max-width: 640px) {
+  .floating-whatsapp {
+    width: 64px !important;
+    height: 64px !important;
+    bottom: 20px !important;
+    right: 20px !important;
+  }
+}
+
+/* Link Button Improvements */
+a[role="button"],
+.link-button,
+a.btn,
+a.cta-primary,
+a.cta-secondary {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-decoration: none !important;
+  touch-action: manipulation !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+  -webkit-touch-callout: none !important;
+}
+
+/* Slider Improvements */
+.slider {
+  touch-action: manipulation !important;
+  -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+  min-height: 44px !important;
+}
+
+.slider::-webkit-slider-thumb {
+  height: 28px !important;
+  width: 28px !important;
+  border: 2px solid white !important;
+  touch-action: manipulation !important;
+}
+
+.slider::-moz-range-thumb {
+  height: 28px !important;
+  width: 28px !important;
+  border: 2px solid white !important;
+}
+
+@media (max-width: 640px) {
+  .slider {
+    min-height: 48px !important;
+  }
+  
+  .slider::-webkit-slider-thumb {
+    height: 32px !important;
+    width: 32px !important;
+    border: 3px solid white !important;
+  }
+  
+  .slider::-moz-range-thumb {
+    height: 32px !important;
+    width: 32px !important;
+    border: 3px solid white !important;
+  }
+}
+
+/* Touch Target Minimum Size */
+.touch-target {
+  min-width: 48px !important;
+  min-height: 48px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  touch-action: manipulation !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+}
+
+@media (max-width: 640px) {
+  .touch-target {
+    min-width: 52px !important;
+    min-height: 52px !important;
+  }
+}
+
+/* Form Input Improvements */
+input, select, textarea {
+  -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+  -webkit-touch-callout: none;
+  outline: none;
+}
+
+input[type="range"] {
+  touch-action: manipulation !important;
+  min-height: 44px !important;
+}
+
+/* Remove any conflicting styles */
+* {
+  -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+}
+
+/* High priority button fixes */
+button:not(:disabled) {
+  cursor: pointer !important;
+}
+
+/* Ensure all interactive elements are properly sized for mobile */
+@media (max-width: 640px) {
+  button, .btn, [role="button"], input[type="button"], input[type="submit"] {
+    min-height: 48px !important;
+    padding: 12px 16px !important;
+  }
+}
