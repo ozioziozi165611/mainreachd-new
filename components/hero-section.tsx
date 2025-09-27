@@ -293,10 +293,12 @@ export default function HeroSection() {
 
   const handleVideoClick = () => {
     if (isMobile) {
-      // On mobile, toggle play/pause and show controls briefly
+      // On mobile, toggle play/pause and manage controls properly
       togglePlayPause()
       setShowControls(true)
-      setTimeout(() => setShowControls(false), 2500)
+      clearHideControlsTimer()
+      // Only start hide timer if video will be playing
+      // The effect at line 320 will handle control visibility based on play state
     } else {
       // Desktop behavior - show controls and toggle play
       setShowControls(true)
