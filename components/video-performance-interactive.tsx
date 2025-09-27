@@ -93,7 +93,6 @@ export default function VideoPerformanceInteractive() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isMobile, setIsMobile] = useState(false)
   const [controlsTimeout, setControlsTimeout] = useState<NodeJS.Timeout | null>(null)
-  const justShownByTouchRef = useRef(false)
 
   const [player, setPlayer] = useState<any>(null)
 
@@ -141,7 +140,7 @@ export default function VideoPerformanceInteractive() {
           width: "100%",
           videoId: gutterGurusData.youtubeId,
           playerVars: {
-            autoplay: 0,
+            autoplay: 1,
             controls: 0,
             disablekb: 1,
             fs: 0,
@@ -150,7 +149,7 @@ export default function VideoPerformanceInteractive() {
             playsinline: 1,
             rel: 0,
             showinfo: 0,
-            mute: 0,
+            mute: 1,
             loop: 1,
             playlist: gutterGurusData.youtubeId,
           },
@@ -340,30 +339,18 @@ export default function VideoPerformanceInteractive() {
                 onMouseLeave={() => !isMobile && setShowControls(false)}
                 onTouchStart={() => {
                   if (isMobile) {
-                    if (!showControls) {
-                      justShownByTouchRef.current = true
-                      setShowControls(true)
-                    } else {
-                      // Clear suppression flag and refresh timer when controls already visible
-                      justShownByTouchRef.current = false
-                    }
+                    setShowControls(true)
                     // Clear existing timeout and reset hide timer
                     if (controlsTimeout) {
                       clearTimeout(controlsTimeout)
                     }
                     const newTimeout = setTimeout(() => {
                       setShowControls(false)
-                    }, 3000)
+                    }, 4000)
                     setControlsTimeout(newTimeout)
                   }
                 }}
                 onClick={(e) => {
-                  // On mobile, prevent playback if controls were just shown by touch
-                  if (isMobile && justShownByTouchRef.current) {
-                    e.preventDefault()
-                    justShownByTouchRef.current = false
-                    return
-                  }
                   handlePlayPause()
                 }}
               >
@@ -391,7 +378,7 @@ export default function VideoPerformanceInteractive() {
                   className={`absolute inset-0 transition-opacity duration-300 ${
                     isMobile 
                       ? (showControls ? "opacity-100" : "opacity-0")
-                      : (showControls && !isPlaying ? "opacity-100" : "opacity-0")
+                      : (showControls ? "opacity-100" : "opacity-0")
                   } pointer-events-none`}
                 >
                   {/* Center Play Button Only */}
@@ -399,22 +386,15 @@ export default function VideoPerformanceInteractive() {
                     <button
                       onClick={(e) => {
                         e.stopPropagation()
-                        // On mobile, suppress action if controls were just shown by touch
-                        if (isMobile && justShownByTouchRef.current) {
-                          e.preventDefault()
-                          justShownByTouchRef.current = false
-                          return
-                        }
                         handlePlayPause()
-                        // On mobile, clear suppression flag and reset the hide timer
+                        // On mobile, reset the hide timer
                         if (isMobile) {
-                          justShownByTouchRef.current = false
                           if (controlsTimeout) {
                             clearTimeout(controlsTimeout)
                           }
                           const newTimeout = setTimeout(() => {
                             setShowControls(false)
-                          }, 3000)
+                          }, 4000)
                           setControlsTimeout(newTimeout)
                         }
                       }}
@@ -436,22 +416,15 @@ export default function VideoPerformanceInteractive() {
                     <button
                       onClick={(e) => {
                         e.stopPropagation()
-                        // On mobile, suppress action if controls were just shown by touch
-                        if (isMobile && justShownByTouchRef.current) {
-                          e.preventDefault()
-                          justShownByTouchRef.current = false
-                          return
-                        }
                         handleMuteToggle()
-                        // On mobile, clear suppression flag and reset the hide timer
+                        // On mobile, reset the hide timer
                         if (isMobile) {
-                          justShownByTouchRef.current = false
                           if (controlsTimeout) {
                             clearTimeout(controlsTimeout)
                           }
                           const newTimeout = setTimeout(() => {
                             setShowControls(false)
-                          }, 3000)
+                          }, 4000)
                           setControlsTimeout(newTimeout)
                         }
                       }}
