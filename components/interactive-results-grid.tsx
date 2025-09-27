@@ -59,7 +59,7 @@ const results = [
 export default function InteractiveResultsGrid() {
   return (
     <section
-      id="results"
+      id="interactive-results"
       className="relative py-20 md:py-28 bg-gradient-to-br from-slate-800 to-slate-900 overflow-hidden"
     >
       <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/10 via-purple-900/10 to-pink-900/10"></div>

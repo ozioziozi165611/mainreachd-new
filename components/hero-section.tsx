@@ -64,24 +64,25 @@ export default function HeroSection() {
       const video = videoRef.current
       
       if (isMobile) {
-        // Mobile: Try autoplay with audio first, fallback to muted
+        // Mobile: Keep audio on by default, only mute if explicitly needed
         video.muted = false
         setIsMuted(false)
+        video.volume = 0.8
+        setVolume(0.8)
         
         video.play().then(() => {
           setIsPlaying(true)
+          // Try to ensure audio stays on for mobile
+          setTimeout(() => {
+            if (video.muted) {
+              video.muted = false
+              setIsMuted(false)
+            }
+          }, 1000)
         }).catch((error) => {
-          console.log('Mobile autoplay with audio failed, trying muted:', error)
-          // Browser blocked audio autoplay, fallback to muted
-          video.muted = true
-          setIsMuted(true)
-          
-          video.play().then(() => {
-            setIsPlaying(true)
-          }).catch((err) => {
-            console.log('Mobile autoplay completely failed:', err)
-            setIsPlaying(false)
-          })
+          console.log('Mobile autoplay with audio failed, keeping audio on but paused:', error)
+          // Don't mute on mobile, just pause if needed
+          setIsPlaying(false)
         })
       } else {
         // Desktop: Try autoplay with audio first
