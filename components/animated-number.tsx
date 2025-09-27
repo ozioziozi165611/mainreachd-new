@@ -10,7 +10,7 @@ export default function AnimatedNumber({ value }: { value: number }) {
     damping: 60,
     stiffness: 100,
   })
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const isInView = useInView(ref, { once: true, margin: "-50px" })
 
   useEffect(() => {
     if (isInView) {

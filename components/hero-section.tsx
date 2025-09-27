@@ -467,25 +467,6 @@ export default function HeroSection() {
                 Your browser does not support the video tag.
               </video>
               
-              {/* Audio Control - Only On Hover/Touch */}
-              {showControls && isMuted && (
-                <button
-                  onClick={toggleMute}
-                  className="absolute bottom-4 left-4 bg-black/60 hover:bg-black/80 active:bg-black/90 text-white p-3 min-w-[44px] min-h-[44px] rounded-full backdrop-blur-lg shadow-lg transition-all duration-300 touch-manipulation select-none flex items-center justify-center"
-                  title="Unmute"
-                >
-                  <VolumeX className="w-4 h-4" />
-                </button>
-              )}
-              {showControls && !isMuted && (
-                <button
-                  onClick={toggleMute}
-                  className="absolute bottom-4 left-4 bg-black/60 hover:bg-black/80 active:bg-black/90 text-white p-3 min-w-[44px] min-h-[44px] rounded-full backdrop-blur-lg shadow-lg transition-all duration-300 touch-manipulation select-none flex items-center justify-center"
-                  title="Mute"
-                >
-                  <Volume2 className="w-4 h-4" />
-                </button>
-              )}
               
               {/* Fullscreen Button - Shows on Both Mobile and Desktop */}
               {showControls && (
