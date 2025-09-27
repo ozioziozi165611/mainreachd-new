@@ -249,8 +249,8 @@ export default function HeroSection() {
       clearTimeout(hideControlsTimer.current)
     }
     
-    // Much shorter timer for mobile devices for cleaner experience
-    const hideDelay = isMobile ? 1200 : 3000
+    // Longer timer for mobile devices to allow easier interaction with controls
+    const hideDelay = isMobile ? 3000 : 3000
     hideControlsTimer.current = setTimeout(() => {
       setShowControls(false)
     }, hideDelay)
@@ -280,12 +280,10 @@ export default function HeroSection() {
   // Touch/mobile handlers - Enhanced for mobile experience
   const handleTouch = () => {
     if (isMobile) {
-      // On mobile, toggle controls visibility for cleaner interface
-      setShowControls(!showControls)
-      if (!showControls) {
-        clearHideControlsTimer()
-        startHideControlsTimer()
-      }
+      // On mobile, show controls and start hide timer
+      setShowControls(true)
+      clearHideControlsTimer()
+      startHideControlsTimer()
     } else {
       setShowControls(true)
       clearHideControlsTimer()
@@ -295,9 +293,10 @@ export default function HeroSection() {
 
   const handleVideoClick = () => {
     if (isMobile) {
-      // On mobile, just show controls for audio control
+      // On mobile, toggle play/pause and show controls briefly
+      togglePlayPause()
       setShowControls(true)
-      setTimeout(() => setShowControls(false), 2000)
+      setTimeout(() => setShowControls(false), 2500)
     } else {
       // Desktop behavior - show controls and toggle play
       setShowControls(true)
@@ -541,9 +540,42 @@ export default function HeroSection() {
                   </div>
                 )}
 
-                {/* Control Buttons - Desktop Only */}
+                {/* Control Buttons - Responsive for Both Mobile and Desktop */}
                 <div className="flex items-center justify-center">
-                  {!isMobile && (
+                  {isMobile ? (
+                    /* Mobile: Simplified Controls */
+                    <div className="flex items-center justify-center space-x-4">
+                      {/* Mobile Play/Pause Button - Large and Touch-Friendly */}
+                      <button
+                        onClick={togglePlayPause}
+                        className="bg-gradient-to-r from-orange-600 via-orange-500 to-red-600 hover:from-orange-500 hover:via-orange-400 hover:to-red-500 active:from-orange-700 active:via-orange-600 active:to-red-700 text-white p-4 rounded-full transition-all duration-300 backdrop-blur-lg shadow-2xl border-2 border-orange-400/60 touch-manipulation transform active:scale-95 ring-2 ring-orange-500/30 min-w-[56px] min-h-[56px] flex items-center justify-center"
+                        title={isPlaying ? "Pause" : "Play"}
+                      >
+                        {isPlaying ? (
+                          <Pause className="w-6 h-6" />
+                        ) : (
+                          <Play className="w-6 h-6 ml-0.5" />
+                        )}
+                      </button>
+
+                      {/* Mobile Mute/Unmute Button */}
+                      <button
+                        onClick={toggleMute}
+                        className={`${
+                          isMuted 
+                            ? 'bg-red-500/80 hover:bg-red-500/90 active:bg-red-600 border-red-400/60 ring-red-500/30' 
+                            : 'bg-green-500/80 hover:bg-green-500/90 active:bg-green-600 border-green-400/60 ring-green-500/30'
+                        } text-white p-3 rounded-full transition-all duration-300 backdrop-blur-lg shadow-xl border-2 touch-manipulation transform active:scale-95 ring-2 min-w-[48px] min-h-[48px] flex items-center justify-center`}
+                        title={isMuted ? "Unmute" : "Mute"}
+                      >
+                        {isMuted ? (
+                          <VolumeX className="w-5 h-5" />
+                        ) : (
+                          <Volume2 className="w-5 h-5" />
+                        )}
+                      </button>
+                    </div>
+                  ) : (
                     /* Desktop: Full Controls */
                     <div className="flex items-center justify-between w-full">
                       <div className="flex items-center space-x-1.5 sm:space-x-2 md:space-x-3">
