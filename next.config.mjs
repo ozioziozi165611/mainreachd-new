@@ -9,10 +9,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // Configure for Replit environment - allow all hosts
-  experimental: {
-    allowedOrigins: ['*'],
-  },
+  // Configure for Replit environment - trust proxy
+  output: 'standalone',
   // Configure for Replit environment
   async headers() {
     return [
