@@ -333,10 +333,13 @@ export default function HeroSection() {
     if (!videoRef.current) return
 
     if (!isFullscreen) {
-      if (videoRef.current.requestFullscreen) {
+      // iOS Safari requires webkitEnterFullscreen for video elements
+      if ((videoRef.current as any).webkitEnterFullscreen) {
+        ;(videoRef.current as any).webkitEnterFullscreen()
+      } else if (videoRef.current.requestFullscreen) {
         videoRef.current.requestFullscreen()
       } else if ((videoRef.current as any).webkitRequestFullscreen) {
-        // Safari
+        // Safari desktop
         ;(videoRef.current as any).webkitRequestFullscreen()
       } else if ((videoRef.current as any).mozRequestFullScreen) {
         // Firefox
