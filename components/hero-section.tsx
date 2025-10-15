@@ -17,11 +17,11 @@ export default function HeroSection() {
   const [volume, setVolume] = useState(1)
   const [showControls, setShowControls] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
-  const [currentText, setCurrentText] = useState("See How Local AUSSIE Businesses Have DOUBLED Their Revenue Through Meta Marketing")
+  const [currentText, setCurrentText] = useState("See How Local AUSSIE Businesses DOUBLED Their Revenue Through Meta Marketing")
   const [isFullscreen, setIsFullscreen] = useState(false)
   
-  const mobileText = "See How Local AUSSIE Businesses Have DOUBLED Their Revenue Through Meta Marketing"
-  const desktopText = "See How Local AUSSIE Businesses Have DOUBLED Their Revenue Through Meta Marketing"
+  const mobileText = "See How Local AUSSIE Businesses DOUBLED Their Revenue Through Meta Marketing"
+  const desktopText = "See How Local AUSSIE Businesses DOUBLED Their Revenue Through Meta Marketing"
   const videoRef = useRef<HTMLVideoElement>(null)
   const hideControlsTimer = useRef<NodeJS.Timeout | null>(null)
 
