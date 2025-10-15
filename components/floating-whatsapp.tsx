@@ -41,8 +41,8 @@ export default function FloatingWhatsApp() {
                     <p className="text-sm opacity-90">Typically replies instantly</p>
                   </div>
                 </div>
-                <button onClick={() => setIsOpen(false)} className="text-white hover:bg-white/20 rounded-full p-1">
-                  <X className="w-5 h-5" />
+                <button onClick={() => setIsOpen(false)} className="text-white hover:bg-white/20 rounded-full p-2 min-w-[44px] min-h-[44px] flex items-center justify-center">
+                  <X className="w-6 h-6" />
                 </button>
               </div>
             </div>
@@ -70,13 +70,13 @@ export default function FloatingWhatsApp() {
             {/* Quick Replies */}
             <div className="p-4 border-t border-gray-100 flex flex-col items-center">
               <div className="space-y-2 w-full">
-                <button className="w-full text-left bg-gray-50 hover:bg-gray-100 rounded-lg p-3 text-sm transition-colors">
+                <button className="w-full text-left bg-gray-50 hover:bg-gray-100 rounded-lg p-4 text-sm transition-colors min-h-[48px] touch-manipulation">
                   💰 My ads aren't profitable
                 </button>
-                <button className="w-full text-left bg-gray-50 hover:bg-gray-100 rounded-lg p-3 text-sm transition-colors">
+                <button className="w-full text-left bg-gray-50 hover:bg-gray-100 rounded-lg p-4 text-sm transition-colors min-h-[48px] touch-manipulation">
                   📈 I need more leads
                 </button>
-                <button className="w-full text-left bg-gray-50 hover:bg-gray-100 rounded-lg p-3 text-sm transition-colors">
+                <button className="w-full text-left bg-gray-50 hover:bg-gray-100 rounded-lg p-4 text-sm transition-colors min-h-[48px] touch-manipulation">
                   🎯 I want better targeting
                 </button>
               </div>
@@ -88,12 +88,12 @@ export default function FloatingWhatsApp() {
                   rel="noopener noreferrer"
                   onClick={() => setIsOpen(false)}
                 >
-                  <button className="w-full bg-blue-500 hover:bg-blue-600 text-white rounded-lg p-3 font-semibold transition-colors flex items-center justify-center">
-                    <Calendar className="w-4 h-4 mr-2" />
+                  <button className="w-full bg-blue-500 hover:bg-blue-600 text-white rounded-lg p-4 font-semibold transition-colors flex items-center justify-center min-h-[52px] touch-manipulation">
+                    <Calendar className="w-5 h-5 mr-2 flex-shrink-0" />
                     Schedule Free Consultation
                   </button>
                 </Link>
-                <button className="w-full bg-green-500 hover:bg-green-600 text-white rounded-lg p-3 font-semibold transition-colors">
+                <button className="w-full bg-green-500 hover:bg-green-600 text-white rounded-lg p-4 font-semibold transition-colors min-h-[52px] touch-manipulation">
                   Start WhatsApp Conversation
                 </button>
               </div>

@@ -68,20 +68,20 @@ export default function CtaSection() {
             >
               <Button
                 size="lg"
-                className="cta-primary text-white text-lg md:text-xl px-8 md:px-12 py-4 md:py-6 rounded-full font-bold border-0 conversion-glow w-full sm:w-auto"
+                className="cta-primary text-white px-6 md:px-10 py-4 md:py-5 rounded-full font-bold border-0 conversion-glow w-full sm:w-auto min-h-[56px]"
               >
-                <Calendar className="mr-2 md:mr-3 h-5 w-5 md:h-6 md:w-6" />
-                <span className="text-sm sm:text-base md:text-lg">Book Your Free Strategy Call</span>
-                <ArrowRight className="ml-2 md:ml-3 h-5 w-5 md:h-6 md:w-6" />
+                <Calendar className="mr-2 md:mr-3 h-5 w-5 md:h-6 md:w-6 flex-shrink-0" />
+                <span className="text-base sm:text-base md:text-lg">Book Your Free Strategy Call</span>
+                <ArrowRight className="ml-2 md:ml-3 h-5 w-5 md:h-6 md:w-6 flex-shrink-0" />
               </Button>
             </Link>
 
             <Button
               size="lg"
-              className="cta-secondary text-white text-lg md:text-xl px-8 md:px-12 py-4 md:py-6 rounded-full font-bold border-0 w-full sm:w-auto"
+              className="cta-secondary text-white px-6 md:px-10 py-4 md:py-5 rounded-full font-bold border-0 w-full sm:w-auto min-h-[56px]"
             >
-              <Zap className="mr-2 md:mr-3 h-5 w-5 md:h-6 md:w-6" />
-              <span className="text-sm sm:text-base md:text-lg">Get Instant Access to Case Studies</span>
+              <Zap className="mr-2 md:mr-3 h-5 w-5 md:h-6 md:w-6 flex-shrink-0" />
+              <span className="text-base sm:text-base md:text-lg">Get Instant Access to Case Studies</span>
             </Button>
           </motion.div>
 

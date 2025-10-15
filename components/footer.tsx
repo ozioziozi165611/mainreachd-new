@@ -22,12 +22,12 @@ export default function Footer() {
               that trust us to grow their revenue.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="cta-primary-enhanced text-white px-8 py-3 rounded-full font-semibold border-0">
-                <Phone className="mr-2 h-4 w-4" />
+              <Button className="cta-primary-enhanced text-white px-8 py-4 rounded-full font-semibold border-0 min-h-[56px] text-base">
+                <Phone className="mr-2 h-5 w-5 flex-shrink-0" />
                 Speak to Expert
               </Button>
-              <Button className="whatsapp-chat text-white px-8 py-3 rounded-full font-semibold border-0">
-                <MessageCircle className="mr-2 h-4 w-4" />
+              <Button className="whatsapp-chat text-white px-8 py-4 rounded-full font-semibold border-0 min-h-[56px] text-base">
+                <MessageCircle className="mr-2 h-5 w-5 flex-shrink-0" />
                 WhatsApp
               </Button>
             </div>
