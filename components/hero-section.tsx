@@ -293,20 +293,12 @@ export default function HeroSection() {
   }
 
   const handleVideoClick = () => {
-    if (isMobile) {
-      // On mobile, toggle play/pause and manage controls properly
-      togglePlayPause()
-      setShowControls(true)
-      clearHideControlsTimer()
-      // Only start hide timer if video will be playing
-      // The effect at line 320 will handle control visibility based on play state
-    } else {
-      // Desktop behavior - show controls and toggle play
-      setShowControls(true)
-      clearHideControlsTimer()
-      togglePlayPause()
-      startHideControlsTimer()
-    }
+    // Toggle play/pause and show controls
+    togglePlayPause()
+    setShowControls(true)
+    clearHideControlsTimer()
+    // Start hide timer - will auto-hide after 3 seconds if playing
+    startHideControlsTimer()
   }
 
   // Clean up timer on component unmount
@@ -469,17 +461,21 @@ export default function HeroSection() {
               </video>
               
               
-              {/* Fullscreen Button - Shows on Both Mobile and Desktop */}
+              {/* Fullscreen Button - Shows with Controls, Auto-hides after 3 seconds */}
               {showControls && (
                 <button
                   onClick={toggleFullscreen}
-                  className="absolute bottom-4 right-4 bg-black/60 hover:bg-black/80 active:bg-black/90 text-white p-3 min-w-[44px] min-h-[44px] rounded-full backdrop-blur-lg shadow-lg transition-all duration-300 touch-manipulation select-none flex items-center justify-center"
+                  className={`absolute ${
+                    isMobile 
+                      ? 'top-4 right-4 bg-black/70 hover:bg-black/85 active:bg-black/95 p-4 min-w-[52px] min-h-[52px] shadow-2xl border-2 border-white/30' 
+                      : 'bottom-4 right-4 bg-black/60 hover:bg-black/80 active:bg-black/90 p-3 min-w-[44px] min-h-[44px] shadow-lg'
+                  } text-white rounded-full backdrop-blur-lg transition-all duration-300 touch-manipulation select-none flex items-center justify-center z-20`}
                   title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
                 >
                   {isFullscreen ? (
-                    <Minimize className="w-4 h-4" />
+                    <Minimize className={isMobile ? "w-6 h-6" : "w-4 h-4"} />
                   ) : (
-                    <Maximize className="w-4 h-4" />
+                    <Maximize className={isMobile ? "w-6 h-6" : "w-4 h-4"} />
                   )}
                 </button>
               )}

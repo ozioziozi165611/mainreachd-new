@@ -30,7 +30,7 @@ This is a Next.js marketing website for Reach'd Marketing agency. The site showc
 - **Runtime**: `npm start`
 
 ## Recent Changes
-- 2025-10-15: Mobile/iPhone button improvements
+- 2025-10-15: Mobile/iPhone button improvements & Fullscreen enhancement
   - Enhanced all buttons with minimum 44px touch targets for iOS compliance
   - Improved base button component with touch-manipulation CSS for better mobile responsiveness
   - Increased button padding and sizing across all components for better mobile UX
@@ -39,6 +39,8 @@ This is a Next.js marketing website for Reach'd Marketing agency. The site showc
   - Enhanced footer buttons with larger touch areas and better visual hierarchy
   - Improved floating WhatsApp widget with better mobile button sizing
   - Added flex-shrink-0 to icons to prevent layout issues on mobile
+  - Added prominent fullscreen button for mobile video player (top-right position, 52px touch target)
+  - Configured video controls to auto-hide after 3 seconds of inactivity when video is playing
 
 - 2025-09-27: GitHub import setup completion
   - Successfully installed all project dependencies via npm
