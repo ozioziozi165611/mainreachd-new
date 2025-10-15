@@ -402,17 +402,17 @@ export default function HeroSection() {
             </h1>
             
             {/* Book A Free Consultation Button - Mobile Optimized Positioning */}
-            <div className="flex justify-center w-full -mt-6 sm:mt-2 md:mt-4">
+            <div className="flex justify-center w-full mt-4 sm:mt-2 md:mt-4">
               <a
                 href="https://api.leadconnectorhq.com/widget/booking/VTZMJcf2k9axPsM9Edc8"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto"
+                className="w-full sm:w-auto px-4 sm:px-0"
               >
-                <Button className="btn-primary group w-full sm:w-auto text-base sm:text-xl md:text-xl lg:text-2xl px-6 sm:px-12 md:px-12 lg:px-16 py-3 sm:py-5 md:py-7 lg:py-9 shadow-2xl border-2 border-orange-400/40 hover:border-orange-300/60 bg-gradient-to-r from-orange-500 via-orange-600 to-red-600 hover:from-orange-400 hover:via-orange-500 hover:to-red-500 transform hover:scale-[1.02] active:scale-[0.95] transition-all duration-300 rounded-2xl backdrop-blur-sm touch-manipulation select-none min-h-[44px]">
-                  <MessageCircle className="mr-2 sm:mr-4 md:mr-4 lg:mr-5 h-4 w-4 sm:h-6 sm:w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 group-hover:animate-bounce" />
-                  <span className="whitespace-nowrap font-bold drop-shadow-lg">Book A Free Consultation</span>
-                  <ArrowRight className="ml-2 sm:ml-4 md:ml-4 lg:ml-5 h-4 w-4 sm:h-6 sm:w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 group-hover:translate-x-1 transition-transform" />
+                <Button className="btn-primary group w-full sm:w-auto text-base sm:text-lg md:text-xl lg:text-2xl px-6 sm:px-10 md:px-12 lg:px-16 py-4 sm:py-5 md:py-6 lg:py-8 shadow-2xl border-2 border-orange-400/40 hover:border-orange-300/60 bg-gradient-to-r from-orange-500 via-orange-600 to-red-600 hover:from-orange-400 hover:via-orange-500 hover:to-red-500 transform hover:scale-[1.02] active:scale-[0.95] transition-all duration-300 rounded-2xl backdrop-blur-sm touch-manipulation select-none min-h-[56px]">
+                  <MessageCircle className="mr-2 sm:mr-3 md:mr-4 lg:mr-5 h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 group-hover:animate-bounce flex-shrink-0" />
+                  <span className="font-bold drop-shadow-lg">Book A Free Consultation</span>
+                  <ArrowRight className="ml-2 sm:ml-3 md:ml-4 lg:ml-5 h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7 lg:h-8 lg:w-8 group-hover:translate-x-1 transition-transform flex-shrink-0" />
                 </Button>
               </a>
             </div>
