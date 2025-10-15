@@ -30,6 +30,16 @@ This is a Next.js marketing website for Reach'd Marketing agency. The site showc
 - **Runtime**: `npm start`
 
 ## Recent Changes
+- 2025-10-15: Mobile/iPhone button improvements
+  - Enhanced all buttons with minimum 44px touch targets for iOS compliance
+  - Improved base button component with touch-manipulation CSS for better mobile responsiveness
+  - Increased button padding and sizing across all components for better mobile UX
+  - Fixed hero section CTA button with better mobile spacing and sizing (56px min-height)
+  - Optimized CTA section buttons with improved mobile touch targets
+  - Enhanced footer buttons with larger touch areas and better visual hierarchy
+  - Improved floating WhatsApp widget with better mobile button sizing
+  - Added flex-shrink-0 to icons to prevent layout issues on mobile
+
 - 2025-09-27: GitHub import setup completion
   - Successfully installed all project dependencies via npm
   - Configured Next.js for Replit proxy environment with proper host allowance
