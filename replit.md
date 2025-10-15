@@ -39,8 +39,9 @@ This is a Next.js marketing website for Reach'd Marketing agency. The site showc
   - Enhanced footer buttons with larger touch areas and better visual hierarchy
   - Improved floating WhatsApp widget with better mobile button sizing
   - Added flex-shrink-0 to icons to prevent layout issues on mobile
-  - Added prominent fullscreen button for mobile video player (top-right position, 52px touch target)
-  - Configured video controls to auto-hide after 3 seconds of inactivity when video is playing
+  - Added prominent fullscreen button for mobile video player (always visible, top-right position, 52px touch target)
+  - Simplified video controls: tap/click anywhere on video to play/pause, no visible control buttons
+  - Removed pause button and volume controls for cleaner viewing experience
 
 - 2025-09-27: GitHub import setup completion
   - Successfully installed all project dependencies via npm
