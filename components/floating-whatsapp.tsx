@@ -83,7 +83,7 @@ export default function FloatingWhatsApp() {
 
               <div className="w-full mt-3 space-y-2">
                 <Link
-                  href="https://calendly.com/reachdmarketing/30min?month=2025-08"
+                  href="https://api.leadconnectorhq.com/widget/booking/z471FbQS1RgtYzzEZoUn"
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setIsOpen(false)}

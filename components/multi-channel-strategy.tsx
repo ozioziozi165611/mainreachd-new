@@ -213,7 +213,7 @@ export default function MultiChannelStrategy() {
                     Let's discuss how we can help you achieve below $5 CPM across all channels
                   </p>
                   <a
-                    href="https://api.leadconnectorhq.com/widget/booking/VTZMJcf2k9axPsM9Edc8"
+                    href="https://api.leadconnectorhq.com/widget/booking/z471FbQS1RgtYzzEZoUn"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

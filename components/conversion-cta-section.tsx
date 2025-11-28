@@ -88,7 +88,7 @@ export default function ConversionCtaSection() {
             className="flex flex-col sm:flex-row gap-6 justify-center mb-16"
           >
             <Link
-              href="https://calendly.com/reachdmarketing/30min?month=2025-08"
+              href="https://api.leadconnectorhq.com/widget/booking/z471FbQS1RgtYzzEZoUn"
               target="_blank"
               rel="noopener noreferrer"
             >

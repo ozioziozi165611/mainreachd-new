@@ -399,7 +399,7 @@ export default function HeroSection() {
             {/* Book A Free Consultation Button - Mobile Optimized Positioning */}
             <div className="flex justify-center w-full mt-4 sm:mt-2 md:mt-4">
               <a
-                href="https://api.leadconnectorhq.com/widget/booking/VTZMJcf2k9axPsM9Edc8"
+                href="https://api.leadconnectorhq.com/widget/booking/z471FbQS1RgtYzzEZoUn"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto px-4 sm:px-0"
