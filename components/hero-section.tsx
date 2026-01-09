@@ -17,11 +17,11 @@ export default function HeroSection() {
   const [volume, setVolume] = useState(1)
   const [showControls, setShowControls] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
-  const [currentText, setCurrentText] = useState("See How Local AUSSIE Businesses DOUBLED Their Revenue Through Meta Marketing")
+  const [currentText, setCurrentText] = useState("We'll Get Your Business 100+ Qualified Leads... AND Book Them In For You.")
   const [isFullscreen, setIsFullscreen] = useState(false)
   
-  const mobileText = "See How Local AUSSIE Businesses DOUBLED Their Revenue Through Meta Marketing"
-  const desktopText = "See How Local AUSSIE Businesses DOUBLED Their Revenue Through Meta Marketing"
+  const mobileText = "We'll Get Your Business 100+ Qualified Leads... AND Book Them In For You."
+  const desktopText = "We'll Get Your Business 100+ Qualified Leads... AND Book Them In For You."
   const videoRef = useRef<HTMLVideoElement>(null)
   const hideControlsTimer = useRef<NodeJS.Timeout | null>(null)
 
@@ -421,7 +421,7 @@ export default function HeroSection() {
             className="space-y-6 md:space-y-8 max-w-6xl px-4 sm:px-6"
           >
             <p className="text-sm sm:text-xl md:text-2xl text-gray-200 max-w-5xl mx-auto leading-relaxed font-medium text-center px-1 sm:px-2">
-              We've generated our clients <span className="text-green-400 font-bold bg-green-400/10 px-1 sm:px-2 py-1 rounded-lg whitespace-nowrap">300k+ in revenue</span> Stop wasting money on ads that don't convert.
+              We handle the strategy, testing, and creation, as well as assigning you a <span className="text-green-400 font-bold bg-green-400/10 px-1 sm:px-2 py-1 rounded-lg whitespace-nowrap">personal appointment setter</span> so you only speak with real enquiries. Click below to find out how it works.
             </p>
           </motion.div>
 
