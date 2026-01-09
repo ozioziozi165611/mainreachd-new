@@ -71,7 +71,7 @@ export default function GetStartedPage() {
                 </CardHeader>
                 <CardContent className="text-center">
                   <Link
-                    href="https://api.leadconnectorhq.com/widget/booking/z471FbQS1RgtYzzEZoUn"
+                    href="https://api.leadconnectorhq.com/widget/booking/LJBzpKtGPBFoJmDVND4t"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -157,7 +157,7 @@ export default function GetStartedPage() {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
-                  href="https://api.leadconnectorhq.com/widget/booking/z471FbQS1RgtYzzEZoUn"
+                  href="https://api.leadconnectorhq.com/widget/booking/LJBzpKtGPBFoJmDVND4t"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

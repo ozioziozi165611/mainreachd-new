@@ -88,7 +88,7 @@ export default function ConversionCtaSection() {
             className="flex flex-col sm:flex-row gap-6 justify-center mb-16"
           >
             <Link
-              href="https://api.leadconnectorhq.com/widget/booking/z471FbQS1RgtYzzEZoUn"
+              href="https://api.leadconnectorhq.com/widget/booking/LJBzpKtGPBFoJmDVND4t"
               target="_blank"
               rel="noopener noreferrer"
             >

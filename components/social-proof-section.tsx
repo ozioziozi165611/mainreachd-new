@@ -44,7 +44,7 @@ const clientLogos = [
   "ADL Auto",
   "Gutter Gurus SA",
   "Bondoc Detailing",
-  "BetForecast",
+  "Client",
   "Window Masters",
   "Clean Pro",
   "Detail Kings",

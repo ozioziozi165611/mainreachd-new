@@ -61,7 +61,7 @@ export default function CtaSection() {
             className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mb-8 md:mb-12 px-4"
           >
             <Link
-              href="https://api.leadconnectorhq.com/widget/booking/z471FbQS1RgtYzzEZoUn"
+              href="https://api.leadconnectorhq.com/widget/booking/LJBzpKtGPBFoJmDVND4t"
               target="_blank"
               rel="noopener noreferrer"
               className="w-full sm:w-auto"

@@ -37,7 +37,7 @@ const campaigns = [
     color: "from-purple-500 to-pink-500",
   },
   {
-    name: "BetForecast",
+    name: "Client",
     duration: "Campaign Period",
     conversations: 154,
     reach: 12000,

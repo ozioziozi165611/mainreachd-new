@@ -399,7 +399,7 @@ export default function HeroSection() {
             {/* Book A Free Consultation Button - Mobile Optimized Positioning */}
             <div className="flex justify-center w-full mt-4 sm:mt-2 md:mt-4">
               <a
-                href="https://api.leadconnectorhq.com/widget/booking/z471FbQS1RgtYzzEZoUn"
+                href="https://api.leadconnectorhq.com/widget/booking/LJBzpKtGPBFoJmDVND4t"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto px-4 sm:px-0"
@@ -421,7 +421,7 @@ export default function HeroSection() {
             className="space-y-6 md:space-y-8 max-w-6xl px-4 sm:px-6"
           >
             <p className="text-sm sm:text-xl md:text-2xl text-gray-200 max-w-5xl mx-auto leading-relaxed font-medium text-center px-1 sm:px-2">
-              We handle the strategy, testing, and creation, as well as assigning you a <span className="text-green-400 font-bold bg-green-400/10 px-1 sm:px-2 py-1 rounded-lg whitespace-nowrap">personal appointment setter</span> so you only speak with real enquiries. Click below to find out how it works.
+              We handle the strategy, testing, and creation, as well as assigning you a <span className="text-green-400 font-bold bg-green-400/10 px-1 sm:px-2 py-1 rounded-lg whitespace-nowrap">personal appointment setter</span> so you only speak with real enquiries. Click above to find out how it works.
             </p>
           </motion.div>
 

@@ -57,7 +57,7 @@ export default function Header() {
           {/* CTA Button */}
           <div className="hidden md:block">
             <a
-              href="https://api.leadconnectorhq.com/widget/booking/z471FbQS1RgtYzzEZoUn"
+              href="https://api.leadconnectorhq.com/widget/booking/LJBzpKtGPBFoJmDVND4t"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -90,7 +90,7 @@ export default function Header() {
               {/* No navigation items added here as per the updates */}
               <div className="pt-4 border-t border-slate-800/50">
                 <a
-                  href="https://api.leadconnectorhq.com/widget/booking/z471FbQS1RgtYzzEZoUn"
+                  href="https://api.leadconnectorhq.com/widget/booking/LJBzpKtGPBFoJmDVND4t"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block"

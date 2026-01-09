@@ -16,7 +16,7 @@ const afterPoints = [
 ]
 
 const caseStudyData = {
-  client: "BetForecast",
+  client: "Client",
   before: {
     conversations: 9,
     costPerConvo: 16.38,

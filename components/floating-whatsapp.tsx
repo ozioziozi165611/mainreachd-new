@@ -83,7 +83,7 @@ export default function FloatingWhatsApp() {
 
               <div className="w-full mt-3 space-y-2">
                 <Link
-                  href="https://api.leadconnectorhq.com/widget/booking/z471FbQS1RgtYzzEZoUn"
+                  href="https://api.leadconnectorhq.com/widget/booking/LJBzpKtGPBFoJmDVND4t"
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setIsOpen(false)}
